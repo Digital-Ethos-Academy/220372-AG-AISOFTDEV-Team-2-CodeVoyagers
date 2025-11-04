@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and Editor Folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Course-specific generated files
+# Ignore the entire artifacts directory as it contains generated outputs
+artifacts/
+app/
+tests/
+
+# Ignore build artifacts
+build/
+dist/
+*.egg-info/
+
+# Ignore test reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+
+# Project-specific config and entry files to ignore
+pytest.ini
+
+# Dockerfile variants (covering common filename casing)
+dockerfile
+Dockerfile
+
+# Root HTML entry that may be generated for demos
+index.html
+
+# Type checker and linter caches
+.mypy_cache/
+.ruff_cache/
