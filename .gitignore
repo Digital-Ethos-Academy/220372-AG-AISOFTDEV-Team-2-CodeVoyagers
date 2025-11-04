@@ -32,12 +32,6 @@ Thumbs.db
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Course-specific generated files
-# Ignore the entire artifacts directory as it contains generated outputs
-artifacts/
-app/
-tests/
-
 # Ignore build artifacts
 build/
 dist/
@@ -54,13 +48,6 @@ htmlcov/
 
 # Project-specific config and entry files to ignore
 pytest.ini
-
-# Dockerfile variants (covering common filename casing)
-dockerfile
-Dockerfile
-
-# Root HTML entry that may be generated for demos
-index.html
 
 # Type checker and linter caches
 .mypy_cache/
