@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Utils - Demo</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin: 0; padding: 0; }
+      #root { padding: 24px; }
+      pre { background:#f6f8fa; padding:12px; border-radius:6px; }
+      .card { border:1px solid #e1e4e8; padding:16px; border-radius:8px; max-width:900px }
+      button { background:#0366d6; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer }
+      button:disabled { opacity:0.6 }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script>
+      const e = React.createElement;
+
+      function App(){
+        const [status, setStatus] = React.useState('idle');
+        const [output, setOutput] = React.useState('');
+        const [loading, setLoading] = React.useState(false);
+
+        React.useEffect(()=>{
+          fetch('/api/status')
+            .then(r=>r.json())
+            .then(d=> setStatus(d.status || JSON.stringify(d)))
+            .catch(()=> setStatus('unavailable'))
+        },[])
+
+        const runTest = async ()=>{
+          setLoading(true);
+          setOutput('');
+          try{
+            const r = await fetch('/api/completion', { method: 'POST' });
+            const json = await r.json();
+            setOutput(json.output || JSON.stringify(json));
+          }catch(err){
+            setOutput(String(err));
+          }finally{ setLoading(false) }
+        }
+
+        return e('div', {id:'app'},
+          e('h1', null, 'AI Utils — Demo'),
+          e('div', {className:'card'},
+            e('p', null, 'Server status: ', e('strong', null, status)),
+            e('p', null, e('button', {onClick: runTest, disabled:loading}, loading? 'Running...': 'Run LLM Test')),
+            e('h3', null, 'Output'),
+            e('pre', null, output || 'No output yet')
+          )
+        )
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+    </script>
+  </body>
+</html>
