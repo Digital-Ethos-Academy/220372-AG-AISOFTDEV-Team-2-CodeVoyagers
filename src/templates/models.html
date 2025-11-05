@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+
+{% block title %}Models - AI Utils{% endblock %}
+
+{% block head %}
+<style>
+  .btn-set-default {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-set-default:hover {
+    background-color: #2980b9;
+  }
+  
+  .btn-set-default:active {
+    transform: translateY(1px);
+  }
+  
+  /* Enhanced table styling to ensure proper column separation */
+  .models-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+    table-layout: fixed;
+  }
+  
+  .models-table th,
+  .models-table td {
+    border: 1px solid #e1e4e8;
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .models-table th:first-child,
+  .models-table td:first-child {
+    width: 25%;
+    white-space: normal;
+  }
+  
+  .models-table th:nth-child(2),
+  .models-table td:nth-child(2) {
+    width: 12%;
+  }
+  
+  .models-table th:nth-child(3),
+  .models-table td:nth-child(3),
+  .models-table th:nth-child(4),
+  .models-table td:nth-child(4),
+  .models-table th:nth-child(5),
+  .models-table td:nth-child(5),
+  .models-table th:nth-child(6),
+  .models-table td:nth-child(6),
+  .models-table th:nth-child(7),
+  .models-table td:nth-child(7) {
+    width: 8%;
+    text-align: center;
+  }
+  
+  .models-table th:nth-child(8),
+  .models-table td:nth-child(8),
+  .models-table th:nth-child(9),
+  .models-table td:nth-child(9) {
+    width: 12%;
+    text-align: right;
+  }
+  
+  .status-indicator {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .context-tokens,
+  .output-tokens {
+    text-align: right;
+    font-family: monospace;
+  }
+  
+  /* Ensure table maintains structure */
+  .models-table tbody tr {
+    display: table-row;
+  }
+  
+  .models-table tbody td {
+    display: table-cell;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Model Selection & Testing</h1>
+<p>Browse and test different AI models available in the system.</p>
+
+<div class="card">
+  <h3>Available Providers</h3>
+  <p id="providers">Loading provider information...</p>
+</div>
+
+<div class="card">
+  <h3>Model Selector</h3>
+  <div class="model-selector">
+    <select id="providerFilter">
+      <option value="">All Providers</option>
+    </select>
+    <select id="modelSelect">
+      <option value="">Loading models...</option>
+    </select>
+    <button onclick="testSelectedModel()">Test Selected Model</button>
+    <button onclick="setDefaultModel()">Set as Default</button>
+    <button onclick="refreshModels()">Refresh</button>
+  </div>
+  
+  <div id="modelInfo" class="card" style="display: none;">
+    <h4>Selected Model Information</h4>
+    <div id="modelDetails"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Model Test Results</h3>
+  <pre id="testOutput">Select a model and click "Test Selected Model" to see the output</pre>
+</div>
+
+<div class="card">
+  <h3>All Available Models</h3>
+  <div style="overflow-x: auto;">
+    <table class="models-table" id="modelsTable">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Provider</th>
+          <th>Text</th>
+          <th>Vision</th>
+          <th>Image Gen</th>
+          <th>Image Edit</th>
+          <th>Audio</th>
+          <th>Context Tokens</th>
+          <th>Output Tokens</th>
+        </tr>
+      </thead>
+      <tbody id="modelsTableBody">
+        <tr><td colspan="9">Loading models...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let models = {};
+  let availableProviders = [];
+  let loading = false;
+
+  async function loadProviders() {
+    try {
+      const response = await fetch('/api/providers');
+      const data = await response.json();
+      availableProviders = data.providers || [];
+      const providersEl = document.getElementById('providers');
+      
+      if (availableProviders.length > 0) {
+        providersEl.innerHTML = `🔑 <strong>Available providers:</strong> ${availableProviders.join(', ')}`;
+      } else {
+        providersEl.innerHTML = '🔑 <strong>Available providers:</strong> None - Please configure API keys in .env file';
+      }
+    } catch (error) {
+      document.getElementById('providers').innerHTML = '❌ Error loading provider information';
+    }
+  }
+
+  async function loadModels() {
+    try {
+      // Load all models
+      const response = await fetch('/api/models');
+      const data = await response.json();
+      models = data.models || {};
+      
+      populateModelSelect();
+      populateModelsTable();
+    } catch (error) {
+      console.error('Error loading models:', error);
+      document.getElementById('modelSelect').innerHTML = '<option value="">Error loading models</option>';
+      document.getElementById('modelsTableBody').innerHTML = 
+        '<tr><td colspan="9">❌ Error loading models</td></tr>';
+    }
+  }
+
+  function populateModelSelect() {
+    const select = document.getElementById('modelSelect');
+    const providerFilter = document.getElementById('providerFilter').value;
+    
+    select.innerHTML = '<option value="">Select a model...</option>';
+    
+    // Use all models for selection
+    const selectModels = models;
+    
+    // Populate provider filter if not already done
+    const providerSelect = document.getElementById('providerFilter');
+    if (providerSelect.children.length === 1) { // Only has "All Providers"
+      const providers = new Set();
+      Object.values(selectModels).forEach(config => providers.add(config.provider));
+      Array.from(providers).sort().forEach(provider => {
+        const option = document.createElement('option');
+        option.value = provider;
+        option.textContent = provider.charAt(0).toUpperCase() + provider.slice(1);
+        providerSelect.appendChild(option);
+      });
+    }
+    
+    // Filter models by provider if selected
+    const filteredModels = Object.entries(selectModels).filter(([name, config]) => 
+      !providerFilter || config.provider === providerFilter
+    );
+    
+    filteredModels.sort(([a], [b]) => a.localeCompare(b)).forEach(([modelName, config]) => {
+      const option = document.createElement('option');
+      option.value = modelName;
+      option.textContent = `${modelName} (${config.provider})`;
+      select.appendChild(option);
+    });
+  }
+
+  function populateModelsTable() {
+    const tbody = document.getElementById('modelsTableBody');
+    const providerFilter = document.getElementById('providerFilter').value;
+    tbody.innerHTML = '';
+    
+    // Use all models for table display
+    const displayModels = models;
+    
+    const filteredModels = Object.entries(displayModels).filter(([name, config]) => 
+      !providerFilter || config.provider === providerFilter
+    );
+    
+    filteredModels.sort(([a], [b]) => a.localeCompare(b)).forEach(([modelName, config]) => {
+      const row = document.createElement('tr');
+      
+      const providerClass = `provider-${config.provider}`;
+      
+      // Use new format field names
+      const contextTokens = config.context_window_tokens;
+      const outputTokens = config.output_tokens;
+      
+      row.innerHTML = `
+        <td><strong>${modelName}</strong></td>
+        <td><span class="${providerClass}">${config.provider}</span></td>
+        <td class="status-indicator">${config.text_generation ? '✅' : '❌'}</td>
+        <td class="status-indicator">${config.vision ? '✅' : '❌'}</td>
+        <td class="status-indicator">${config.image_generation ? '✅' : '❌'}</td>
+        <td class="status-indicator">${config.image_modification ? '✅' : '❌'}</td>
+        <td class="status-indicator">${config.audio_transcription ? '✅' : '❌'}</td>
+        <td class="context-tokens">${contextTokens ? contextTokens.toLocaleString() : '-'}</td>
+        <td class="output-tokens">${outputTokens ? outputTokens.toLocaleString() : '-'}</td>
+      `;
+      
+      row.style.cursor = 'pointer';
+      row.onclick = () => selectModel(modelName);
+      
+      tbody.appendChild(row);
+    });
+  }
+
+  function selectModel(modelName) {
+    document.getElementById('modelSelect').value = modelName;
+    showModelInfo(modelName);
+  }
+
+  function showModelInfo(modelName) {
+    const config = models[modelName];
+    if (!config) return;
+    
+    const infoDiv = document.getElementById('modelInfo');
+    const detailsDiv = document.getElementById('modelDetails');
+    
+    detailsDiv.innerHTML = `
+      <p><strong>Model:</strong> ${modelName}</p>
+      <p><strong>Provider:</strong> <span class="provider-${config.provider}">${config.provider}</span></p>
+      <p><strong>Context Window:</strong> ${config.context_window_tokens?.toLocaleString() || 'Not specified'}</p>
+      <p><strong>Max Output Tokens:</strong> ${config.output_tokens?.toLocaleString() || 'Not specified'}</p>
+      <p><strong>Supports Vision:</strong> ${config.vision ? '✅ Yes' : '❌ No'}</p>
+      <p><strong>Supports Text Generation:</strong> ${config.text_generation ? '✅ Yes' : '❌ No'}</p>
+      <p><strong>Supports Image Generation:</strong> ${config.image_generation ? '✅ Yes' : '❌ No'}</p>
+      <p><strong>Supports Image Editing:</strong> ${config.image_modification ? '✅ Yes' : '❌ No'}</p>
+      <p><strong>Supports Audio Transcription:</strong> ${config.audio_transcription ? '✅ Yes' : '❌ No'}</p>
+    `;
+    
+    infoDiv.style.display = 'block';
+  }
+
+  async function testSelectedModel() {
+    if (loading) return;
+    
+    const modelName = document.getElementById('modelSelect').value;
+    if (!modelName) {
+      alert('Please select a model first');
+      return;
+    }
+    
+    loading = true;
+    const outputEl = document.getElementById('testOutput');
+    outputEl.textContent = `Testing model: ${modelName}...\n\nPlease wait...`;
+    
+    try {
+      const response = await fetch('/api/test-model', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ model: modelName })
+      });
+      const data = await response.json();
+      outputEl.textContent = data.output || JSON.stringify(data);
+    } catch (error) {
+      outputEl.textContent = `❌ Error testing model: ${error}`;
+    } finally {
+      loading = false;
+    }
+  }
+
+  function refreshModels() {
+    loadModels();
+    loadProviders();
+  }
+
+  // Handle model selection change
+  document.getElementById('modelSelect').addEventListener('change', function() {
+    const modelName = this.value;
+    if (modelName) {
+      showModelInfo(modelName);
+    } else {
+      document.getElementById('modelInfo').style.display = 'none';
+    }
+  });
+
+  // Handle provider filter change
+  document.getElementById('providerFilter').addEventListener('change', function() {
+    populateModelSelect();
+    populateModelsTable();
+    document.getElementById('modelInfo').style.display = 'none';
+  });
+
+  // Load data on page load
+  loadProviders();
+  loadModels();
+
+  // Set default model function
+  async function setDefaultModel() {
+    const modelName = document.getElementById('modelSelect').value;
+    if (!modelName) {
+      alert('Please select a model first');
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/set-default-model', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ model: modelName })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        alert(result.message);
+        // Optionally refresh the page or update UI to show new default
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      alert('Error setting default model: ' + error.message);
+    }
+  }
+</script>
+{% endblock %}

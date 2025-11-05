@@ -1,61 +1,68 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Utils - Demo</title>
-    <style>
-      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin: 0; padding: 0; }
-      #root { padding: 24px; }
-      pre { background:#f6f8fa; padding:12px; border-radius:6px; }
-      .card { border:1px solid #e1e4e8; padding:16px; border-radius:8px; max-width:900px }
-      button { background:#0366d6; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer }
-      button:disabled { opacity:0.6 }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script>
-      const e = React.createElement;
+{% extends "base.html" %}
 
-      function App(){
-        const [status, setStatus] = React.useState('idle');
-        const [output, setOutput] = React.useState('');
-        const [loading, setLoading] = React.useState(false);
+{% block title %}AI Utils - Demo{% endblock %}
 
-        React.useEffect(()=>{
-          fetch('/api/status')
-            .then(r=>r.json())
-            .then(d=> setStatus(d.status || JSON.stringify(d)))
-            .catch(()=> setStatus('unavailable'))
-        },[])
+{% block content %}
+<h1>AI Utils — Demo</h1>
+<p>This demo tests the LLM integration similar to the notebook example you provided.</p>
 
-        const runTest = async ()=>{
-          setLoading(true);
-          setOutput('');
-          try{
-            const r = await fetch('/api/completion', { method: 'POST' });
-            const json = await r.json();
-            setOutput(json.output || JSON.stringify(json));
-          }catch(err){
-            setOutput(String(err));
-          }finally{ setLoading(false) }
-        }
+<div class="card">
+  <h3>Server Status</h3>
+  <p id="status">Loading...</p>
+  
+  <h3>Test LLM</h3>
+  <p><button id="testBtn" onclick="runTest()">Run LLM Test</button></p>
+  
+  <h3>Output</h3>
+  <pre id="output">Click "Run LLM Test" to test the model connection and see the output</pre>
+</div>
+{% endblock %}
 
-        return e('div', {id:'app'},
-          e('h1', null, 'AI Utils — Demo'),
-          e('div', {className:'card'},
-            e('p', null, 'Server status: ', e('strong', null, status)),
-            e('p', null, e('button', {onClick: runTest, disabled:loading}, loading? 'Running...': 'Run LLM Test')),
-            e('h3', null, 'Output'),
-            e('pre', null, output || 'No output yet')
-          )
-        )
+{% block scripts %}
+<script>
+  let loading = false;
+
+  async function fetchStatus() {
+    try {
+      const response = await fetch('/api/status');
+      const data = await response.json();
+      const statusEl = document.getElementById('status');
+      
+      if (data.message) {
+        statusEl.textContent = data.message;
+      } else {
+        statusEl.textContent = data.status || JSON.stringify(data);
       }
+    } catch (error) {
+      document.getElementById('status').textContent = '❌ Server unavailable';
+    }
+  }
 
-      ReactDOM.createRoot(document.getElementById('root')).render(e(App));
-    </script>
-  </body>
-</html>
+  async function runTest() {
+    if (loading) return;
+    
+    loading = true;
+    const testBtn = document.getElementById('testBtn');
+    const outputEl = document.getElementById('output');
+    
+    testBtn.textContent = 'Running...';
+    testBtn.disabled = true;
+    outputEl.textContent = '';
+    
+    try {
+      const response = await fetch('/api/completion', { method: 'POST' });
+      const data = await response.json();
+      outputEl.textContent = data.output || JSON.stringify(data);
+    } catch (error) {
+      outputEl.textContent = String(error);
+    } finally {
+      loading = false;
+      testBtn.textContent = 'Run LLM Test';
+      testBtn.disabled = false;
+    }
+  }
+
+  // Load status on page load
+  fetchStatus();
+</script>
+{% endblock %}

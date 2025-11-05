@@ -19,6 +19,9 @@ venv.bak/
 .env.*
 !.env.example
 
+# Artifacts
+artifacts/
+
 # IDE and Editor Folders
 .vscode/
 .idea/

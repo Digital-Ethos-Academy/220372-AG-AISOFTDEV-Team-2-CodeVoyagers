@@ -1,201 +1,142 @@
-"""Model configurations for supported LLM providers."""
+"""Model metadata and helper utilities."""
+from __future__ import annotations
 
-from typing import Dict, Any, List
+from typing import Any, Dict
 
+from .settings import display, Markdown
 
-# Recommended models configuration
+# --- Model & Provider Configuration ---
 RECOMMENDED_MODELS: Dict[str, Dict[str, Any]] = {
-    "gpt-4o": {
-        "provider": "openai",
-        "max_tokens": 128000,
-        "supports_vision": True,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.0025, "output": 0.01}
-    },
-    "gpt-4o-mini": {
-        "provider": "openai",
-        "max_tokens": 128000,
-        "supports_vision": True,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.000150, "output": 0.0006}
-    },
-    "gpt-4-turbo": {
-        "provider": "openai",
-        "max_tokens": 128000,
-        "supports_vision": True,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.01, "output": 0.03}
-    },
-    "o1": {
-        "provider": "openai",
-        "max_tokens": 32768,
-        "supports_vision": False,
-        "supports_function_calling": False,
-        "cost_per_1k_tokens": {"input": 0.015, "output": 0.06}
-    },
-    "o3": {
-        "provider": "openai",
-        "max_tokens": 32768,
-        "supports_vision": False,
-        "supports_function_calling": False,
-        "cost_per_1k_tokens": {"input": 0.015, "output": 0.06}
-    },
-    "gemini-2.5-flash": {
-        "provider": "google",
-        "max_tokens": 1048576,
-        "supports_vision": True,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.000075, "output": 0.0003}
-    },
-    "gemini-1.5-pro": {
-        "provider": "google",
-        "max_tokens": 2097152,
-        "supports_vision": True,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.00125, "output": 0.005}
-    },
-    "claude-3-5-sonnet": {
-        "provider": "anthropic",
-        "max_tokens": 8192,
-        "supports_vision": True,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.003, "output": 0.015}
-    },
-    "claude-3-5-haiku": {
-        "provider": "anthropic",
-        "max_tokens": 8192,
-        "supports_vision": True,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.0008, "output": 0.004}
-    },
-    "llama-3.3-70b": {
-        "provider": "meta",
-        "max_tokens": 8192,
-        "supports_vision": False,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.0005, "output": 0.0015}
-    },
-    "deepseek-v3": {
-        "provider": "deepseek",
-        "max_tokens": 8192,
-        "supports_vision": False,
-        "supports_function_calling": True,
-        "cost_per_1k_tokens": {"input": 0.00014, "output": 0.00028}
-    }
+    "gpt-5-nano-2025-08-07": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 400_000, "output_tokens": 128_000},
+    "gpt-5-mini-2025-08-07": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 400_000, "output_tokens": 128_000},
+    "gpt-5-2025-08-07": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 400_000, "output_tokens": 128_000},
+    "gpt-4o": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 128_000, "output_tokens": 16_384},
+    "gpt-4o-mini": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 128_000, "output_tokens": 16_384},
+    "gpt-4.1": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_000_000, "output_tokens": 32_768},
+    "gpt-4.1-mini": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_000_000, "output_tokens": 32_000},
+    "gpt-4.1-nano": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_000_000, "output_tokens": 32_000},
+    "o3": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 200_000, "output_tokens": 100_000},
+    "o4-mini": {"provider": "openai", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 200_000, "output_tokens": 100_000},
+    "dall-e-3": {"provider": "openai", "vision": False, "text_generation": False, "image_generation": True, "image_modification": False, "audio_transcription": False, "context_window_tokens": None, "output_tokens": None},
+    #"gpt-image-1": {"provider": "openai", "vision": False, "text_generation": False, "image_generation": True, "image_modification": True, "audio_transcription": False, "context_window_tokens": None, "output_tokens": None},
+    #"gpt-image-1-mini": {"provider": "openai", "vision": False, "text_generation": False, "image_generation": True, "image_modification": True, "audio_transcription": False, "context_window_tokens": None, "output_tokens": None},
+    "gpt-4o-transcribe": {"provider": "openai", "vision": False, "text_generation": False, "image_generation": False, "image_modification": False, "audio_transcription": True, "context_window_tokens": None, "output_tokens": None},
+    "gpt-4o-mini-transcribe":  {"provider": "openai", "vision": False, "text_generation": False, "image_generation": False, "image_modification": False, "audio_transcription": True, "context_window_tokens": None, "output_tokens": None},
+    "whisper-1": {"provider": "openai", "vision": False, "text_generation": False, "image_generation": False, "image_modification": False, "audio_transcription": True, "context_window_tokens": None, "output_tokens": None},
+    "claude-sonnet-4-5-20250929": {"provider": "anthropic", "vision": True, "text_generation": True, "context_window_tokens": 200_000, "output_tokens": 64_000},
+    "claude-haiku-4-5-20251001":  {"provider": "anthropic", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 200_000, "output_tokens": 64_000},
+    "claude-opus-4-1-20250805":   {"provider": "anthropic", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 200_000, "output_tokens": 32_000},
+    "gemini-2.5-pro": {"provider": "google", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_048_576, "output_tokens": 65_536},
+    "gemini-2.5-flash": {"provider": "google", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_048_576, "output_tokens": 65_536},
+    "gemini-2.5-flash-lite": {"provider": "google", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_048_576, "output_tokens": 65_536},
+    "gemini-live-2.5-flash-preview": {"provider": "google", "vision": False, "text_generation": False, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_048_576, "output_tokens": 8_192},
+    "gemini-2.5-flash-image-preview": {"provider": "google", "vision": False, "text_generation": False, "image_generation": True, "image_modification": True, "audio_transcription": False, "context_window_tokens": 32_768, "output_tokens": 32_768},
+    "gemini-2.0-flash-preview-image-generation": {"provider": "google", "vision": False, "text_generation": False, "image_generation": True, "image_modification": True, "audio_transcription": False, "context_window_tokens": 32_000, "output_tokens": 8_192},
+    "gemini-1.5-pro": {"provider": "google", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 2_000_000, "output_tokens": 8_192},
+    "gemini-1.5-flash": {"provider": "google", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_000_000, "output_tokens": 8_192},
+    "gemini-2.0-flash-exp": {"provider": "google", "vision": True, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_048_576, "output_tokens": 8_192},
+    "veo-3.1-generate-preview": {"provider": "google", "vision": False, "text_generation": False, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_024, "output_tokens": None},
+    "veo-3.1-fast-generate-preview": {"provider": "google", "vision": False, "text_generation": False, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_024, "output_tokens": None},
+    "meta-llama/Llama-4-Scout-17B-16E-Instruct": {"provider": "huggingface", "vision": False, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 10_000_000, "output_tokens": 100_000},
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct": {"provider": "huggingface", "vision": False, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 1_000_000, "output_tokens": 100_000},
+    "meta-llama/Llama-3.3-70B-Instruct": {"provider": "huggingface", "vision": False, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 8_192, "output_tokens": 4_096},
+    "tokyotech-llm/Llama-3.1-Swallow-8B-Instruct-v0.5": {"provider": "huggingface", "vision": False, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 4_096, "output_tokens": 1_024},
+    "mistralai/Mistral-7B-Instruct-v0.3": {"provider": "huggingface", "vision": False, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 32_768, "output_tokens": 8_192},
+    "deepseek-ai/DeepSeek-V3.1": {"provider": "huggingface", "vision": False, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 128_000, "output_tokens": 100_000},
+    "Qwen/Qwen-Image": {"provider": "huggingface", "vision": False, "text_generation": False, "image_generation": True, "image_modification": False, "audio_transcription": False, "context_window_tokens": None, "output_tokens": None},
+    "Qwen/Qwen-Image-Edit": {"provider": "huggingface", "vision": False, "text_generation": False, "image_generation": False, "image_modification": True, "audio_transcription": False, "context_window_tokens": None, "output_tokens": None},
+    "stabilityai/stable-diffusion-3.5-large": {"provider": "huggingface", "vision": False, "text_generation": False, "image_generation": True, "image_modification": False, "audio_transcription": False, "context_window_tokens": None, "output_tokens": None},
+    "black-forest-labs/FLUX.1-Kontext-dev": {"provider": "huggingface", "vision": False, "text_generation": False, "image_generation": False, "image_modification": True, "audio_transcription": False, "context_window_tokens": None, "output_tokens": None},
+    "MiniMaxAI/MiniMax-M2": {"provider": "huggingface", "vision": False, "text_generation": True, "image_generation": False, "image_modification": False, "audio_transcription": False, "context_window_tokens": 128_000, "output_tokens": 8_192},
 }
 
 
-def get_model_info(model_name: str) -> Dict[str, Any]:
-    """Get information about a specific model.
-    
-    Parameters
-    ----------
-    model_name : str
-        The name of the model.
-        
-    Returns
-    -------
-    Dict[str, Any]
-        Model configuration dictionary.
-        
-    Raises
-    ------
-    KeyError
-        If the model is not found.
-    """
-    if model_name not in RECOMMENDED_MODELS:
-        raise KeyError(f"Model '{model_name}' not found in RECOMMENDED_MODELS")
-    return RECOMMENDED_MODELS[model_name]
+def recommended_models_table(task: str | None = None,
+                             provider: str | None = None,
+                             text_generation: bool | None = None,
+                             vision: bool | None = None,
+                             image_generation: bool | None = None,
+                             audio_transcription: bool | None = None,
+                             min_context: int | None = None,
+                             min_output_tokens: int | None = None,
+                             image_modification: bool | None = None) -> str:
+    """Return a markdown table of recommended models filtered by capabilities."""
+    if task:
+        t = task.lower()
+        if t in {"vision", "multimodal", "vl"} and vision is None:
+            vision = True
+        elif t in {"image", "image_generation", "image-generation"} and image_generation is None:
+            image_generation = True
+        elif t in {"image_modification", "image-edit", "image_edit", "image-editing", "editing"} and image_modification is None:
+            image_modification = True
+        elif t in {"audio", "speech", "audio_transcription", "stt"} and audio_transcription is None:
+            audio_transcription = True
+        elif t == "text" and text_generation is None:
+            text_generation = True
+            vision = False if vision is None else vision
+            image_generation = False if image_generation is None else image_generation
+            image_modification = False if image_modification is None else image_modification
+            audio_transcription = False if audio_transcription is None else audio_transcription
 
-
-def get_models_by_provider(provider: str) -> List[str]:
-    """Get all models for a specific provider.
-    
-    Parameters
-    ----------
-    provider : str
-        The provider name.
-        
-    Returns
-    -------
-    List[str]
-        List of model names for the provider.
-    """
-    return [
-        model for model, config in RECOMMENDED_MODELS.items()
-        if config["provider"] == provider
-    ]
-
-
-def get_vision_capable_models() -> List[str]:
-    """Get all models that support vision.
-    
-    Returns
-    -------
-    List[str]
-        List of model names that support vision.
-    """
-    return [
-        model for model, config in RECOMMENDED_MODELS.items()
-        if config.get("supports_vision", False)
-    ]
-
-
-def get_function_calling_models() -> List[str]:
-    """Get all models that support function calling.
-    
-    Returns
-    -------
-    List[str]
-        List of model names that support function calling.
-    """
-    return [
-        model for model, config in RECOMMENDED_MODELS.items()
-        if config.get("supports_function_calling", False)
-    ]
-
-
-def recommended_models_table() -> str:
-    """Generate a formatted table of recommended models.
-    
-    Returns
-    -------
-    str
-        A formatted table string showing model information.
-    """
-    headers = ["Model", "Provider", "Max Tokens", "Vision", "Functions", "Cost (Input/Output per 1K)"]
     rows = []
-    
-    for model, config in RECOMMENDED_MODELS.items():
-        cost = config.get("cost_per_1k_tokens", {})
-        cost_str = f"${cost.get('input', 0):.6f}/${cost.get('output', 0):.6f}"
-        
-        row = [
-            model,
-            config["provider"],
-            str(config["max_tokens"]),
-            "✓" if config.get("supports_vision", False) else "✗",
-            "✓" if config.get("supports_function_calling", False) else "✗",
-            cost_str
-        ]
-        rows.append(row)
-    
-    # Calculate column widths
-    col_widths = [len(header) for header in headers]
-    for row in rows:
-        for i, cell in enumerate(row):
-            col_widths[i] = max(col_widths[i], len(cell))
-    
-    # Format table
-    separator = "+" + "+".join("-" * (width + 2) for width in col_widths) + "+"
-    header_row = "|" + "|".join(f" {headers[i]:<{col_widths[i]}} " for i in range(len(headers))) + "|"
-    
-    table_lines = [separator, header_row, separator]
-    
-    for row in rows:
-        table_row = "|" + "|".join(f" {row[i]:<{col_widths[i]}} " for i in range(len(row))) + "|"
-        table_lines.append(table_row)
-    
-    table_lines.append(separator)
-    
-    return "\n".join(table_lines)
+    for model_name in sorted(RECOMMENDED_MODELS.keys()):
+        cfg = RECOMMENDED_MODELS[model_name]
+        model_provider = (cfg.get("provider") or "").lower()
+        model_text = cfg.get("text_generation", False)
+        model_vision = cfg.get("vision", False)
+        model_image = cfg.get("image_generation", False)
+        model_image_mod = cfg.get("image_modification", False)
+        model_audio = cfg.get("audio_transcription", False)
+
+        context = cfg.get("context_window_tokens")
+        if context is None:
+            context = cfg.get("context_window")
+
+        max_tokens = cfg.get("output_tokens")
+        if max_tokens is None:
+            max_tokens = cfg.get("max_output_tokens")
+
+        if provider and model_provider != provider.lower():
+            continue
+        if text_generation is not None and bool(model_text) != bool(text_generation):
+            continue
+        if vision is not None and bool(model_vision) != bool(vision):
+            continue
+        if image_generation is not None and bool(model_image) != bool(image_generation):
+            continue
+        if image_modification is not None and bool(model_image_mod) != bool(image_modification):
+            continue
+        if audio_transcription is not None and bool(model_audio) != bool(audio_transcription):
+            continue
+        if min_context and (context is None or (isinstance(context, int) and context < min_context)):
+            continue
+        if min_output_tokens and (max_tokens is None or (isinstance(max_tokens, int) and max_tokens < min_output_tokens)):
+            continue
+
+        def _fmt_num(x: Any) -> str:
+            if x is None:
+                return "-"
+            try:
+                return f"{int(x):,}"
+            except Exception:
+                return str(x)
+
+        rows.append(
+            f"| {model_name} | {model_provider or '-'} | {'✅' if model_text else '❌'} | "
+            f"{'✅' if model_vision else '❌'} | {'✅' if model_image else '❌'} | "
+            f"{'✅' if model_image_mod else '❌'} | {'✅' if model_audio else '❌'} | "
+            f"{_fmt_num(context)} | {_fmt_num(max_tokens)} |"
+        )
+
+    if not rows:
+        return "No models match the specified criteria."
+
+    header = (
+        "| Model | Provider | Text | Vision | Image Gen | Image Edit | Audio Transcription | Context Window | Max Output Tokens |\n"
+        "|---|---|---|---|---|---|---|---|---|\n"
+    )
+    table = header + "\n".join(rows)
+    display(Markdown(table))
+    return table
+
+__all__ = ['RECOMMENDED_MODELS', 'recommended_models_table']
