@@ -3,65 +3,26 @@
 {% block title %}AI Utils - Demo{% endblock %}
 
 {% block content %}
-<h1>Recruitment Dashboard</h1>
-<p>Connect recruiters with applicants and view detailed analytics and conversations.</p>
+<h1>Performance Evaluation Dashboard</h1>
+<p>Project managers review employee metrics, skills, and readiness for strategic tasks.</p>
 
 <div class="dashboard-container">
   <div class="fixed-columns">
-    <!-- Column 1: Recruiters/HR -->
+  <!-- Column 1: Project Managers -->
     <div class="column">
-      <h3>Recruiters/HR</h3>
-      <div class="user-list">
-        <div class="user-item" onclick="selectRecruiter(1)">
-          <h4>Sarah Johnson</h4>
-          <p>Senior Recruiter - Tech</p>
-          <span class="company">TechCorp Inc.</span>
-        </div>
-        <div class="user-item" onclick="selectRecruiter(2)">
-          <h4>Michael Chen</h4>
-          <p>HR Manager</p>
-          <span class="company">InnovateSoft</span>
-        </div>
-        <div class="user-item" onclick="selectRecruiter(3)">
-          <h4>Emma Rodriguez</h4>
-          <p>Talent Acquisition Lead</p>
-          <span class="company">DataFlow Systems</span>
-        </div>
-        <div class="user-item" onclick="selectRecruiter(4)">
-          <h4>David Park</h4>
-          <p>Technical Recruiter</p>
-          <span class="company">CloudTech Solutions</span>
-        </div>
-        <div class="user-item" onclick="selectRecruiter(5)">
-          <h4>Lisa Thompson</h4>
-          <p>Director of People</p>
-          <span class="company">StartupHub</span>
-        </div>
-      </div>
-      <div class="add-button" onclick="openAddRecruiterModal()">
-        <span class="plus-icon">+</span>Add New Recruiter
+      <h3>Project Managers</h3>
+      <div class="user-list" id="managerList"></div>
+      <div class="add-button" onclick="openAddManagerModal()">
+        <span class="plus-icon">+</span>Add New Project Manager
       </div>
     </div>
 
-    <!-- Column 2: Applicants -->
+  <!-- Column 2: Employees -->
     <div class="column">
-      <h3>Applicants</h3>
-      <div class="user-list">
-        <div class="user-item" onclick="selectApplicant(1)">
-          <h4>Alex Rivera</h4>
-          <p>Full Stack Developer</p>
-          <span class="experience">5 years experience</span>
-          <div class="skills">React, Node.js, Python</div>
-        </div>
-        <div class="user-item" onclick="selectApplicant(2)">
-          <h4>Jordan Kim</h4>
-          <p>Data Scientist</p>
-          <span class="experience">3 years experience</span>
-          <div class="skills">ML, Python, SQL, Tableau</div>
-        </div>
-      </div>
-      <div class="add-button" onclick="openAddApplicantModal()">
-        <span class="plus-icon">+</span>Add New Applicant
+      <h3>Employees</h3>
+      <div class="user-list" id="employeeList"></div>
+      <div class="add-button" onclick="openAddEmployeeModal()">
+        <span class="plus-icon">+</span>Add New Employee
       </div>
     </div>
   </div>
@@ -69,9 +30,9 @@
   <div class="flexible-columns">
     <!-- Column 3: Information Card -->
     <div class="column" id="profileColumn">
-      <h3>Applicant Profile</h3>
+  <h3>Employee Profile</h3>
       <div id="profileCard" class="profile-card">
-        <p>Select an applicant to view their detailed profile and metrics.</p>
+  <p>Select an employee to view their detailed profile and metrics.</p>
       </div>
     </div>
 
@@ -80,103 +41,114 @@
 
     <!-- Column 4: Conversation Output -->
     <div class="column" id="conversationColumn">
-      <h3>Recruiter Conversation</h3>
+  <h3>Performance Discussion</h3>
       <div id="conversationOutput" class="conversation-output">
-        <p>Select both a recruiter and an applicant to generate conversation insights.</p>
+  <p>Select both a project manager and an employee to generate discussion insights.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Add Recruiter Modal -->
-<div id="addRecruiterModal" class="modal">
+<!-- Add Project Manager Modal -->
+<div id="addManagerModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>Add New Recruiter</h3>
-      <button class="close" onclick="closeModal('addRecruiterModal')">&times;</button>
+  <h3>Add New Project Manager</h3>
+  <button class="close" onclick="closeModal('addManagerModal')">&times;</button>
     </div>
-    <form id="recruiterForm">
+  <form id="managerForm">
       <div class="form-group">
-        <label for="recruiterName">Full Name:</label>
-        <input type="text" id="recruiterName" name="name" required>
+  <label for="managerName">Full Name:</label>
+  <input type="text" id="managerName" name="name" required>
       </div>
       <div class="form-group">
-        <label for="recruiterTitle">Job Title:</label>
-        <input type="text" id="recruiterTitle" name="title" required>
+  <label for="managerRole">Role:</label>
+  <input type="text" id="managerRole" name="role" required>
       </div>
       <div class="form-group">
-        <label for="recruiterCompany">Company:</label>
-        <input type="text" id="recruiterCompany" name="company" required>
+  <label for="managerDepartment">Department:</label>
+  <input type="text" id="managerDepartment" name="department" required>
       </div>
       <div class="form-group">
-        <label for="recruiterEmail">Email:</label>
-        <input type="email" id="recruiterEmail" name="email" required>
+  <label for="managerEmail">Email:</label>
+  <input type="email" id="managerEmail" name="email" required>
       </div>
       <div class="form-group">
-        <label for="recruiterExperience">Years of Experience:</label>
-        <input type="number" id="recruiterExperience" name="experience" min="0" max="50" required>
+  <label for="managerExperience">Years of Experience:</label>
+  <input type="number" id="managerExperience" name="experience" min="0" max="50" required>
       </div>
       <div class="form-group">
-        <label for="recruiterSpecialty">Recruitment Specialty:</label>
-        <select id="recruiterSpecialty" name="specialty" required>
-          <option value="">Select Specialty</option>
-          <option value="Technology">Technology</option>
-          <option value="Healthcare">Healthcare</option>
-          <option value="Finance">Finance</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Sales">Sales</option>
-          <option value="General">General</option>
-        </select>
+        <label for="managerFocus">Primary Focus Area:</label>
+        <input type="text" id="managerFocus" name="focus_area" placeholder="e.g. Scalability, Delivery, Quality" required>
       </div>
       <div class="form-actions">
-        <button type="button" class="btn-generate" onclick="generateRecruiterData()">Generate Data</button>
-        <button type="button" class="btn-secondary" onclick="closeModal('addRecruiterModal')">Cancel</button>
-        <button type="submit" class="btn-primary">Add Recruiter</button>
+    <button type="button" class="btn-generate" onclick="openPromptModal('project-manager')">Generate Data</button>
+    <button type="button" class="btn-secondary" onclick="closeModal('addManagerModal')">Cancel</button>
+    <button type="submit" class="btn-primary">Add Project Manager</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Add Applicant Modal -->
-<div id="addApplicantModal" class="modal">
+<!-- Add Employee Modal -->
+<div id="addEmployeeModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>Add New Applicant</h3>
-      <button class="close" onclick="closeModal('addApplicantModal')">&times;</button>
+  <h3>Add New Employee</h3>
+  <button class="close" onclick="closeModal('addEmployeeModal')">&times;</button>
     </div>
-    <form id="applicantForm">
+  <form id="employeeForm">
       <div class="form-group">
-        <label for="applicantName">Full Name:</label>
-        <input type="text" id="applicantName" name="name" required>
+  <label for="employeeName">Full Name:</label>
+  <input type="text" id="employeeName" name="name" required>
       </div>
       <div class="form-group">
-        <label for="applicantTitle">Job Title/Role:</label>
-        <input type="text" id="applicantTitle" name="title" required>
+  <label for="employeeTitle">Job Title/Role:</label>
+  <input type="text" id="employeeTitle" name="title" required>
       </div>
       <div class="form-group">
-        <label for="applicantExperience">Years of Experience:</label>
-        <input type="number" id="applicantExperience" name="experience" min="0" max="50" required>
+  <label for="employeeExperience">Years of Experience:</label>
+  <input type="number" id="employeeExperience" name="experience" min="0" max="50" required>
       </div>
       <div class="form-group">
-        <label for="applicantEducation">Education:</label>
-        <input type="text" id="applicantEducation" name="education" required>
+  <label for="employeeEducation">Education:</label>
+  <input type="text" id="employeeEducation" name="education" required>
       </div>
       <div class="form-group">
-        <label for="applicantLocation">Location:</label>
-        <input type="text" id="applicantLocation" name="location" required>
+  <label for="employeeLocation">Location:</label>
+  <input type="text" id="employeeLocation" name="location" required>
       </div>
       <div class="form-group">
-        <label for="applicantSkills">Skills (comma-separated):</label>
-        <textarea id="applicantSkills" name="skills" placeholder="React, Node.js, Python..." required></textarea>
+  <label for="employeeSkills">Skills (comma-separated):</label>
+  <textarea id="employeeSkills" name="skills" placeholder="React, Node.js, Python..." required></textarea>
       </div>
       <div class="form-group">
-        <label for="applicantSummary">Professional Summary:</label>
-        <textarea id="applicantSummary" name="summary" required></textarea>
+  <label for="employeeSummary">Performance Summary:</label>
+  <textarea id="employeeSummary" name="summary" required></textarea>
       </div>
       <div class="form-actions">
-        <button type="button" class="btn-generate" onclick="generateApplicantData()">Generate Data</button>
-        <button type="button" class="btn-secondary" onclick="closeModal('addApplicantModal')">Cancel</button>
-        <button type="submit" class="btn-primary">Add Applicant</button>
+    <button type="button" class="btn-generate" onclick="openPromptModal('employee')">Generate Data</button>
+    <button type="button" class="btn-secondary" onclick="closeModal('addEmployeeModal')">Cancel</button>
+    <button type="submit" class="btn-primary">Add Employee</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Prompt Modal -->
+<div id="promptModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="promptModalTitle">Generate Data</h3>
+      <button class="close" onclick="closeModal('promptModal')">&times;</button>
+    </div>
+    <form id="promptForm">
+      <div class="form-group">
+        <label for="generationPrompt">Optional Prompt (leave blank for generic):</label>
+  <textarea id="generationPrompt" name="prompt" placeholder="e.g. Senior project manager focused on platform scalability OR Mid-level engineer specializing in distributed systems..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Generate</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('promptModal')">Cancel</button>
       </div>
     </form>
   </div>
@@ -185,427 +157,159 @@
 
 {% block scripts %}
 <script>
-  let selectedRecruiter = null;
-  let selectedApplicant = null;
-  let nextRecruiterId = 6;
-  let nextApplicantId = 3;
+  // State
+  let selectedManager = null;
+  let selectedEmployee = null;
+  const managerData = {};
+  const employeeData = {};
+  let generationTarget = null; // 'project-manager' or 'employee'
+  let discussionHistory = [];
 
-  // Sample data for applicants
-  const applicantData = {
-    1: {
-      name: "Alex Rivera",
-      title: "Full Stack Developer",
-      experience: "5 years",
-      education: "BS Computer Science - Stanford University",
-      location: "San Francisco, CA",
-      skills: ["React", "Node.js", "Python", "AWS", "Docker"],
-      metrics: {
-        "Projects Completed": 47,
-        "Code Quality Score": "92/100",
-        "Team Collaboration": "Excellent",
-        "Interview Score": "8.5/10"
-      },
-      summary: "Experienced full-stack developer with strong problem-solving skills and leadership experience."
-    },
-    2: {
-      name: "Jordan Kim",
-      title: "Data Scientist",
-      experience: "3 years",
-      education: "MS Data Science - MIT",
-      location: "Boston, MA",
-      skills: ["Machine Learning", "Python", "SQL", "Tableau", "TensorFlow"],
-      metrics: {
-        "Models Deployed": 23,
-        "Accuracy Improvement": "+15%",
-        "Research Papers": 3,
-        "Technical Assessment": "9.2/10"
-      },
-      summary: "Rising data scientist with proven track record in ML model optimization and business intelligence."
-    }
-  };
+  // Initial load
+  loadInitialData();
 
-  // Modal functions
-  function openAddRecruiterModal() {
-    document.getElementById('addRecruiterModal').classList.add('show');
+  async function loadInitialData() {
+    await Promise.all([loadManagers(), loadEmployees()]);
   }
 
-  function openAddApplicantModal() {
-    document.getElementById('addApplicantModal').classList.add('show');
-  }
-
-  function closeModal(modalId) {
-    document.getElementById(modalId).classList.remove('show');
-    // Reset forms
-    if (modalId === 'addRecruiterModal') {
-      document.getElementById('recruiterForm').reset();
-    } else if (modalId === 'addApplicantModal') {
-      document.getElementById('applicantForm').reset();
-    }
-  }
-
-  // Close modal when clicking outside
-  window.onclick = function(event) {
-    if (event.target.classList.contains('modal')) {
-      event.target.classList.remove('show');
-    }
-  }
-
-  // Generate data functions
-  async function generateRecruiterData() {
-    const generateBtn = event.target;
-    generateBtn.disabled = true;
-    generateBtn.textContent = 'Generating...';
-    
+  async function loadManagers() {
+    const list = document.getElementById('managerList');
+    list.innerHTML = '<p>Loading project managers...</p>';
     try {
-      // Simulate API call for now - replace with actual API call later
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Sample generated data
-      const sampleNames = ["Jennifer Martinez", "Robert Anderson", "Maria Garcia", "James Wilson", "Amanda Lee"];
-      const sampleTitles = ["Senior Talent Acquisition Specialist", "HR Business Partner", "Technical Recruiter", "People Operations Manager", "Talent Sourcing Lead"];
-      const sampleCompanies = ["MetaTech Solutions", "Quantum Dynamics", "NeuralLink Corp", "Azure Systems", "BioTech Innovations"];
-      
-      const randomName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
-      const randomTitle = sampleTitles[Math.floor(Math.random() * sampleTitles.length)];
-      const randomCompany = sampleCompanies[Math.floor(Math.random() * sampleCompanies.length)];
-      
-      document.getElementById('recruiterName').value = randomName;
-      document.getElementById('recruiterTitle').value = randomTitle;
-      document.getElementById('recruiterCompany').value = randomCompany;
-      document.getElementById('recruiterEmail').value = randomName.toLowerCase().replace(' ', '.') + '@' + randomCompany.toLowerCase().replace(' ', '') + '.com';
-      document.getElementById('recruiterExperience').value = Math.floor(Math.random() * 15) + 3;
-      document.getElementById('recruiterSpecialty').value = "Technology";
-      
-    } catch (error) {
-      console.error('Error generating recruiter data:', error);
-      alert('Error generating data. Please try again.');
-    } finally {
-      generateBtn.disabled = false;
-      generateBtn.textContent = 'Generate Data';
+      const res = await fetch('/api/project-managers');
+      const data = await res.json();
+      list.innerHTML = '';
+      (data.project_managers || []).forEach(pm => {
+        managerData[pm.id] = pm;
+        const el = document.createElement('div');
+        el.className = 'user-item';
+        el.onclick = () => selectManager(pm.id, el);
+        el.innerHTML = `<h4>${pm.name}</h4><p>${pm.role}</p><span class="company">${pm.department}</span>`;
+        list.appendChild(el);
+      });
+    } catch (e) {
+      list.innerHTML = '<p>Error loading project managers.</p>';
     }
   }
 
-  async function generateApplicantData() {
-    const generateBtn = event.target;
-    generateBtn.disabled = true;
-    generateBtn.textContent = 'Generating...';
-    
+  async function loadEmployees() {
+    const list = document.getElementById('employeeList');
+    list.innerHTML = '<p>Loading employees...</p>';
     try {
-      // Simulate API call for now - replace with actual API call later
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Sample generated data
-      const sampleNames = ["Christopher Taylor", "Sarah Chang", "Marcus Johnson", "Elena Rodriguez", "David Kim"];
-      const sampleTitles = ["Frontend Developer", "DevOps Engineer", "UX Designer", "Product Manager", "Software Architect"];
-      const sampleLocations = ["Seattle, WA", "Austin, TX", "Denver, CO", "Portland, OR", "Chicago, IL"];
-      const sampleEducations = ["BS Computer Science - UC Berkeley", "MS Software Engineering - Georgia Tech", "BS Information Systems - University of Texas", "MS Computer Science - Carnegie Mellon", "BS Engineering - Purdue University"];
-      
-      const skillSets = [
-        ["JavaScript", "React", "Node.js", "MongoDB", "AWS"],
-        ["Python", "Django", "PostgreSQL", "Docker", "Kubernetes"],
-        ["Java", "Spring Boot", "MySQL", "Redis", "Jenkins"],
-        ["TypeScript", "Vue.js", "GraphQL", "Firebase", "GCP"],
-        ["C#", ".NET Core", "SQL Server", "Azure", "Microservices"]
-      ];
-      
-      const randomName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
-      const randomTitle = sampleTitles[Math.floor(Math.random() * sampleTitles.length)];
-      const randomLocation = sampleLocations[Math.floor(Math.random() * sampleLocations.length)];
-      const randomEducation = sampleEducations[Math.floor(Math.random() * sampleEducations.length)];
-      const randomSkills = skillSets[Math.floor(Math.random() * skillSets.length)];
-      const randomExperience = Math.floor(Math.random() * 12) + 1;
-      
-      document.getElementById('applicantName').value = randomName;
-      document.getElementById('applicantTitle').value = randomTitle;
-      document.getElementById('applicantExperience').value = randomExperience;
-      document.getElementById('applicantEducation').value = randomEducation;
-      document.getElementById('applicantLocation').value = randomLocation;
-      document.getElementById('applicantSkills').value = randomSkills.join(', ');
-      document.getElementById('applicantSummary').value = `Skilled ${randomTitle.toLowerCase()} with ${randomExperience} years of experience in developing and maintaining high-quality software solutions. Proven track record in ${randomSkills.slice(0, 2).join(' and ')} with strong problem-solving abilities and collaborative mindset.`;
-      
-    } catch (error) {
-      console.error('Error generating applicant data:', error);
-      alert('Error generating data. Please try again.');
-    } finally {
-      generateBtn.disabled = false;
-      generateBtn.textContent = 'Generate Data';
+      const res = await fetch('/api/employees');
+      const data = await res.json();
+      list.innerHTML = '';
+      (data.employees || []).forEach(emp => {
+        employeeData[emp.id] = emp;
+        const el = document.createElement('div');
+        el.className = 'user-item';
+        el.onclick = () => selectEmployee(emp.id, el);
+        el.innerHTML = `<h4>${emp.name}</h4><p>${emp.title}</p><span class="experience">${emp.experience_years} yrs</span><div class="skills">${(emp.skills||[]).slice(0,3).join(', ')}</div>`;
+        list.appendChild(el);
+      });
+    } catch (e) {
+      list.innerHTML = '<p>Error loading employees.</p>';
     }
   }
 
-  // Form submission handlers
-  document.getElementById('recruiterForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const recruiterData = Object.fromEntries(formData);
-    
-    // Add new recruiter to the list
-    addNewRecruiter(recruiterData);
-    closeModal('addRecruiterModal');
-  });
-
-  document.getElementById('applicantForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const applicantFormData = Object.fromEntries(formData);
-    
-    // Process skills and create applicant data
-    const skills = applicantFormData.skills.split(',').map(skill => skill.trim());
-    const newApplicantData = {
-      name: applicantFormData.name,
-      title: applicantFormData.title,
-      experience: applicantFormData.experience + " years",
-      education: applicantFormData.education,
-      location: applicantFormData.location,
-      skills: skills,
-      metrics: {
-        "Projects Completed": Math.floor(Math.random() * 50) + 10,
-        "Code Quality Score": (80 + Math.floor(Math.random() * 20)) + "/100",
-        "Team Collaboration": ["Excellent", "Good", "Very Good"][Math.floor(Math.random() * 3)],
-        "Technical Assessment": (7 + Math.random() * 2.5).toFixed(1) + "/10"
-      },
-      summary: applicantFormData.summary
-    };
-    
-    // Add new applicant to the list
-    addNewApplicant(newApplicantData);
-    closeModal('addApplicantModal');
-  });
-
-  function addNewRecruiter(recruiterData) {
-    const recruitersList = document.querySelector('.fixed-columns .column:first-child .user-list');
-    const newRecruiterElement = document.createElement('div');
-    newRecruiterElement.className = 'user-item';
-    newRecruiterElement.onclick = () => selectRecruiter(nextRecruiterId);
-    newRecruiterElement.innerHTML = `
-      <h4>${recruiterData.name}</h4>
-      <p>${recruiterData.title}</p>
-      <span class="company">${recruiterData.company}</span>
-    `;
-    
-    recruitersList.appendChild(newRecruiterElement);
-    nextRecruiterId++;
+  // Selection handlers
+  function selectManager(id, el) {
+    document.querySelectorAll('#managerList .user-item').forEach(n => n.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedManager = id;
+    updateDiscussion();
   }
 
-  function addNewApplicant(applicantData) {
-    const applicantsList = document.querySelector('.fixed-columns .column:nth-child(2) .user-list');
-    const newApplicantElement = document.createElement('div');
-    newApplicantElement.className = 'user-item';
-    newApplicantElement.onclick = () => selectApplicant(nextApplicantId);
-    newApplicantElement.innerHTML = `
-      <h4>${applicantData.name}</h4>
-      <p>${applicantData.title}</p>
-      <span class="experience">${applicantData.experience}</span>
-      <div class="skills">${applicantData.skills.slice(0, 3).join(', ')}</div>
-    `;
-    
-    applicantsList.appendChild(newApplicantElement);
-    applicantData[nextApplicantId] = applicantData;
-    nextApplicantId++;
+  function selectEmployee(id, el) {
+    document.querySelectorAll('#employeeList .user-item').forEach(n => n.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedEmployee = id;
+    updateEmployeeProfile(id);
+    updateDiscussion();
   }
 
-  function selectRecruiter(id) {
-    // Remove previous selection
-    document.querySelectorAll('.column:first-child .user-item').forEach(item => {
-      item.classList.remove('selected');
-    });
-    
-    // Add selection to clicked item
-    event.target.closest('.user-item').classList.add('selected');
-    selectedRecruiter = id;
-    
-    updateConversation();
-  }
-
-  function selectApplicant(id) {
-    // Remove previous selection
-    document.querySelectorAll('.column:nth-child(2) .user-item').forEach(item => {
-      item.classList.remove('selected');
-    });
-    
-    // Add selection to clicked item
-    event.target.closest('.user-item').classList.add('selected');
-    selectedApplicant = id;
-    
-    updateProfileCard(id);
-    updateConversation();
-  }
-
-  function updateProfileCard(applicantId) {
+  function updateEmployeeProfile(employeeId) {
     const profileCard = document.getElementById('profileCard');
-    const applicant = applicantData[applicantId];
-    
-    if (!applicant) return;
-
+    const emp = employeeData[employeeId];
+    if (!emp) return;
     const metricExplanations = {
-      'Projects Completed': 'Total distinct deliverables finished (stories/features) in last 18 months, verified via project tracking.',
-      'Code Quality Score': 'Aggregated static analysis + code review rubric normalized to 100.',
-      'Team Collaboration': 'Average peer feedback rating from quarterly reviews.',
-      'Interview Score': 'Composite of technical + behavioral interview rounds.',
-      'Models Deployed': 'Production ML models deployed with >30 days runtime.',
-      'Accuracy Improvement': 'Relative lift versus baseline model on primary KPI.',
-      'Research Papers': 'Peer-reviewed publications or accepted conference papers.',
-      'Technical Assessment': 'Latest formal timed assessment score.'
+      'Projects Delivered': 'Total distinct deliverables shipped in last 18 months.',
+      'Quality Score': 'Normalized code quality/review metric (0-100).',
+      'Velocity': 'Average sprint story points completed.'
     };
-    
     profileCard.innerHTML = `
       <div class="profile-header">
-        <h4>${applicant.name}</h4>
-        <p class="title">${applicant.title}</p>
-        <p class="location">${applicant.location}</p>
+        <h4>${emp.name}</h4>
+        <p class="title">${emp.title}</p>
+        <p class="location">${emp.location}</p>
       </div>
-      
       <div class="profile-section">
         <h5>Experience & Education</h5>
-        <p><strong>Experience:</strong> ${applicant.experience}</p>
-        <p><strong>Education:</strong> ${applicant.education}</p>
+        <p><strong>Experience:</strong> ${emp.experience_years} years</p>
+        <p><strong>Education:</strong> ${emp.education}</p>
       </div>
-      
       <div class="profile-section">
         <h5>Key Skills</h5>
-        <div class="skills-tags">
-          ${applicant.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
-        </div>
+        <div class="skills-tags">${(emp.skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
       </div>
-      
       <div class="profile-section">
         <h5>Performance Metrics</h5>
         <div class="metrics">
-          ${Object.entries(applicant.metrics).map(([key, value]) => {
-            const tip = metricExplanations[key] || 'Metric definition not available.';
-            return `<div class="metric-item">
-              <span class="metric-label">${key}:</span>
-              <span class="metric-value" data-tip="${tip}" aria-label="${tip}">${value}</span>
-            </div>`;
+          ${Object.entries(emp.metrics||{}).map(([k,v])=>{
+            const tip = metricExplanations[k] || 'Metric definition unavailable.';
+            return `<div class="metric-item"><span class="metric-label">${k}:</span><span class="metric-value" title="${tip}">${v}</span></div>`;
           }).join('')}
         </div>
       </div>
-      
       <div class="profile-section">
         <h5>Summary</h5>
-        <p>${applicant.summary}</p>
+        <p>${emp.summary || 'No summary provided.'}</p>
       </div>
     `;
   }
 
-  function updateConversation() {
-    const conversationOutput = document.getElementById('conversationOutput');
-    
-    if (!selectedRecruiter || !selectedApplicant) {
-      conversationOutput.innerHTML = '<p>Select both a recruiter and an applicant to generate conversation insights.</p>';
-      return;
-    }
-    
-    const applicant = applicantData[selectedApplicant];
-    const recruiterNames = ["Sarah Johnson", "Michael Chen", "Emma Rodriguez", "David Park", "Lisa Thompson"];
-    const recruiterName = recruiterNames[selectedRecruiter - 1];
-    
-    // Generate sample conversation
-    conversationOutput.innerHTML = `
-      <div class="conversation">
-        <div class="conversation-header">
-          <h5>Discussion about ${applicant.name}</h5>
-          <p>Recruiter: ${recruiterName}</p>
-        </div>
-        
-        <div class="conversation-messages">
-          <div class="message recruiter">
-            <strong>${recruiterName}:</strong> "I've reviewed ${applicant.name}'s profile. Their ${applicant.experience} of experience and strong technical skills in ${applicant.skills.slice(0, 2).join(' and ')} make them a compelling candidate."
-          </div>
-          
-          <div class="message colleague">
-            <strong>Hiring Manager:</strong> "I agree. Their ${Object.entries(applicant.metrics)[0][0].toLowerCase()} score of ${Object.entries(applicant.metrics)[0][1]} is impressive. How do they compare to our current team?"
-          </div>
-          
-          <div class="message recruiter">
-            <strong>${recruiterName}:</strong> "They bring exactly what we're looking for. ${applicant.summary} I recommend moving forward with a technical interview."
-          </div>
-          
-          <div class="message colleague">
-            <strong>Hiring Manager:</strong> "Perfect. Let's schedule them for next week. Their background in ${applicant.education.split(' - ')[1]} aligns well with our company culture."
-          </div>
-        </div>
-        
-        <div class="conversation-actions">
-          <button onclick="generateNewConversation()" class="btn-primary">Generate New Conversation</button>
-          <button onclick="continueConversation()" class="btn-primary" style="background:#8e44ad">Continue Conversation</button>
-          <button onclick="toggleInjectComment()" class="btn-primary" style="background:#16a085">Inject Team Lead Comment</button>
-        </div>
-      </div>
-    `;
-  }
-
-  function generateNewConversation() {
-    if (selectedRecruiter && selectedApplicant) {
-      updateConversation();
-    }
-  }
-
-  // Conversation state
-  let conversationHistory = [];
-
-  // Override updateConversation to build initial history
-  const originalUpdateConversation = updateConversation;
-  updateConversation = function() {
-    if (!selectedRecruiter || !selectedApplicant) {
-      document.getElementById('conversationOutput').innerHTML = '<p>Select both a recruiter and an applicant to generate conversation insights.</p>';
-      conversationHistory = [];
-      return;
-    }
-    const applicant = applicantData[selectedApplicant];
-    const recruiterNames = ["Sarah Johnson", "Michael Chen", "Emma Rodriguez", "David Park", "Lisa Thompson"];
-    const recruiterName = recruiterNames[selectedRecruiter - 1];
-    // Seed conversation
-    conversationHistory = [
-      { role: 'recruiter', speaker: recruiterName, text: `I've reviewed ${applicant.name}'s profile. Their ${applicant.experience} of experience and strong technical skills in ${applicant.skills.slice(0,2).join(' and ')} make them a compelling candidate.` },
-      { role: 'colleague', speaker: 'Hiring Manager', text: `I agree. Their ${Object.entries(applicant.metrics)[0][0].toLowerCase()} score of ${Object.entries(applicant.metrics)[0][1]} is impressive. How do they compare to our current team?` },
-      { role: 'recruiter', speaker: recruiterName, text: `They bring exactly what we're looking for. ${applicant.summary} I recommend moving forward with a technical interview.` },
-      { role: 'colleague', speaker: 'Hiring Manager', text: `Perfect. Let's schedule them for next week. Their background in ${applicant.education.split(' - ')[1]} aligns well with our company culture.` }
-    ];
-    renderConversation();
-  }
-
-  function renderConversation() {
+  // Discussion (conversation) handling
+  function updateDiscussion() {
     const container = document.getElementById('conversationOutput');
-    const applicant = applicantData[selectedApplicant];
-    const recruiterNames = ["Sarah Johnson", "Michael Chen", "Emma Rodriguez", "David Park", "Lisa Thompson"];
-    const recruiterName = recruiterNames[selectedRecruiter - 1];
-    let html = `<div class="conversation"><div class="conversation-header"><h5>Discussion about ${applicant.name}</h5><p>Recruiter: ${recruiterName}</p></div><div class="conversation-messages">`;
-    html += conversationHistory.map(msg => {
-      const cls = msg.role === 'colleague' ? 'message colleague' : msg.role === 'teamlead' ? 'message teamlead' : 'message recruiter';
+    if (!selectedManager || !selectedEmployee) {
+      container.innerHTML = '<p>Select both a project manager and an employee to generate discussion insights.</p>';
+      discussionHistory = [];
+      return;
+    }
+    fetch(`/api/conversation?manager_id=${selectedManager}&employee_id=${selectedEmployee}`)
+      .then(r=>r.json())
+      .then(data => { discussionHistory = data.conversation || []; renderDiscussion(); })
+      .catch(()=>{ discussionHistory=[]; renderDiscussion(); });
+  }
+
+  function renderDiscussion() {
+    const emp = employeeData[selectedEmployee];
+    const pmName = managerData[selectedManager]?.name || 'Manager';
+    let html = `<div class="conversation"><div class="conversation-header"><h5>Discussion about ${emp?.name||'Employee'}</h5><p>Project Manager: ${pmName}</p></div><div class="conversation-messages">`;
+    html += discussionHistory.map(msg => {
+  let cls = 'message manager';
+      if (msg.role === 'lead') cls = 'message colleague';
+      if (msg.role === 'teamlead') cls = 'message teamlead';
+  if (msg.role === 'manager') cls = 'message manager';
       return `<div class="${cls}"><strong>${msg.speaker}:</strong> ${msg.text}</div>`;
     }).join('');
-    html += `</div><div class="conversation-actions">`
-    html += `<button onclick="generateNewConversation()" class="btn-primary">Generate New Conversation</button>`;
-    html += `<button onclick="continueConversation()" class="btn-primary" style="background:#8e44ad">Continue Conversation</button>`;
+    html += `</div><div class="conversation-actions">`;
+    html += `<button onclick="refreshDiscussion()" class="btn-primary">Refresh Discussion</button>`;
+    html += `<button onclick="continueDiscussion()" class="btn-primary" style="background:#8e44ad">Continue Discussion</button>`;
     html += `<button onclick="toggleInjectComment()" class="btn-primary" style="background:#16a085">Inject Team Lead Comment</button>`;
     html += `</div>`;
-    html += `<div id="injectCommentArea" style="display:none; margin-top:1rem;" class="card"><h5>Team Lead Comment</h5><textarea id="teamLeadInput" style="width:100%; min-height:80px; padding:0.5rem; box-sizing:border-box;"></textarea><div style="text-align:right; margin-top:0.5rem;"><button class="btn-primary" onclick="submitTeamLeadComment()" style="background:#16a085">Add Comment</button><button class="btn-secondary" onclick="toggleInjectComment()">Cancel</button></div></div>`;
+    html += `<div id="injectCommentArea" style="display:none; margin-top:1rem;" class="card"><h5>Team Lead Comment</h5><textarea id="teamLeadInput" style="width:100%; min-height:80px;"></textarea><div style="text-align:right; margin-top:0.5rem;"><button class="btn-primary" onclick="submitTeamLeadComment()" style="background:#16a085">Add Comment</button><button class="btn-secondary" onclick="toggleInjectComment()">Cancel</button></div></div>`;
     html += `</div>`;
-    container.innerHTML = html;
+    document.getElementById('conversationOutput').innerHTML = html;
   }
 
-  function continueConversation() {
-    if (!selectedRecruiter || !selectedApplicant) return;
-    const applicant = applicantData[selectedApplicant];
-    const recruiterNames = ["Sarah Johnson", "Michael Chen", "Emma Rodriguez", "David Park", "Lisa Thompson"];
-    const recruiterName = recruiterNames[selectedRecruiter - 1];
-    // Simple extension logic
-    const ideas = [
-      `${recruiterName}: We should assess ${applicant.name}'s familiarity with scalable architectures given their background in ${applicant.skills[0]}.`,
-      `Hiring Manager: Let's also verify their soft skills; collaboration rated as ${applicant.metrics['Team Collaboration']}.`,
-      `${recruiterName}: I'll prepare a technical scenario focusing on ${applicant.skills.slice(0,3).join(', ')}.`,
-      `Hiring Manager: Add a pair-programming exercise to evaluate real-time problem solving.`,
-    ];
-    // Add two random new lines
-    for (let i=0;i<2;i++) {
-      const line = ideas[Math.floor(Math.random()*ideas.length)];
-      if (line.startsWith(recruiterName)) {
-        conversationHistory.push({ role:'recruiter', speaker: recruiterName, text: line.replace(`${recruiterName}: `,'') });
-      } else if (line.startsWith('Hiring Manager')) {
-        conversationHistory.push({ role:'colleague', speaker:'Hiring Manager', text: line.replace('Hiring Manager: ','') });
-      }
-    }
-    renderConversation();
+  function refreshDiscussion(){ updateDiscussion(); }
+
+  function continueDiscussion() {
+    if (!selectedManager || !selectedEmployee) return;
+    fetch('/api/conversation/continue', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({manager_id: selectedManager, employee_id: selectedEmployee})})
+      .then(r=>r.json())
+      .then(data => { discussionHistory = data.conversation || discussionHistory; renderDiscussion(); });
   }
 
   function toggleInjectComment() {
@@ -618,63 +322,144 @@
     const input = document.getElementById('teamLeadInput');
     const val = input.value.trim();
     if (!val) return;
-    conversationHistory.push({ role:'teamlead', speaker:'Team Lead', text: val });
-    input.value='';
-    toggleInjectComment();
-    renderConversation();
+    fetch('/api/conversation/comment', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({manager_id: selectedManager, employee_id: selectedEmployee, text: val})})
+      .then(r=>r.json())
+      .then(data => { discussionHistory = data.conversation || discussionHistory; input.value=''; toggleInjectComment(); renderDiscussion(); });
   }
 
-  // Style for team lead messages (inject via JS if not present)
+  // Generation modal
+  function openPromptModal(target) {
+    generationTarget = target; // 'project-manager' or 'employee'
+    document.getElementById('generationPrompt').value = '';
+    document.getElementById('promptModalTitle').textContent = target === 'project-manager' ? 'Generate Project Manager Data' : 'Generate Employee Data';
+    document.getElementById('promptModal').classList.add('show');
+  }
+
+  document.getElementById('promptForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const prompt = document.getElementById('generationPrompt').value.trim();
+    if (generationTarget === 'project-manager') {
+      await generateManagerData(prompt);
+    } else if (generationTarget === 'employee') {
+      await generateEmployeeData(prompt);
+    }
+    closeModal('promptModal');
+  });
+
+  async function generateManagerData(promptText){
+    const btn = document.querySelector('#managerForm .btn-generate');
+    if (btn){ btn.disabled=true; btn.textContent='Generating...'; }
+    try {
+      const res = await fetch('/api/generate/project-manager', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt: promptText||''})});
+      const data = await res.json();
+      const pm = data.project_manager;
+      document.getElementById('managerName').value = pm.name || '';
+      document.getElementById('managerRole').value = pm.role || '';
+      document.getElementById('managerDepartment').value = pm.department || '';
+      document.getElementById('managerEmail').value = pm.email || '';
+      document.getElementById('managerExperience').value = pm.experience_years || '';
+      document.getElementById('managerFocus').value = pm.focus_area || '';
+    } catch(err){ alert('Error generating project manager data'); }
+    finally { if (btn){ btn.disabled=false; btn.textContent='Generate Data'; } }
+  }
+
+  async function generateEmployeeData(promptText){
+    const btn = document.querySelector('#employeeForm .btn-generate');
+    if (btn){ btn.disabled=true; btn.textContent='Generating...'; }
+    try {
+      const res = await fetch('/api/generate/employee', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt: promptText||''})});
+      const data = await res.json();
+      const emp = data.employee;
+      document.getElementById('employeeName').value = emp.name || '';
+      document.getElementById('employeeTitle').value = emp.title || '';
+      document.getElementById('employeeExperience').value = emp.experience_years || '';
+      document.getElementById('employeeEducation').value = emp.education || '';
+      document.getElementById('employeeLocation').value = emp.location || '';
+      document.getElementById('employeeSkills').value = (emp.skills||[]).join(', ');
+      document.getElementById('employeeSummary').value = emp.summary || '';
+    } catch(err){ alert('Error generating employee data'); }
+    finally { if (btn){ btn.disabled=false; btn.textContent='Generate Data'; } }
+  }
+
+  // Form submissions
+  document.getElementById('managerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const payload = {
+      name: f.name.value.trim(),
+      role: f.role.value.trim(),
+      department: f.department.value.trim(),
+      email: f.email.value.trim(),
+      experience: parseInt(f.experience.value,10)||0,
+      focus_area: f.focus_area.value.trim()
+    };
+    try {
+      const res = await fetch('/api/project-managers', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+      const data = await res.json();
+      if (data.project_manager){ managerData[data.project_manager.id] = data.project_manager; prependManager(data.project_manager); }
+      else alert('Error adding project manager');
+    } catch(err){ alert('Network error adding project manager'); }
+    closeModal('addManagerModal');
+  });
+
+  document.getElementById('employeeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const skillsArr = f.skills.value.split(',').map(s=>s.trim()).filter(Boolean);
+    const payload = {
+      name: f.name.value.trim(),
+      title: f.title.value.trim(),
+      experience: parseInt(f.experience.value,10)||0,
+      education: f.education.value.trim(),
+      location: f.location.value.trim(),
+      skills: skillsArr,
+      summary: f.summary.value.trim()
+    };
+    try {
+      const res = await fetch('/api/employees', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+      const data = await res.json();
+      if (data.employee){ employeeData[data.employee.id] = data.employee; prependEmployee(data.employee); }
+      else alert('Error adding employee');
+    } catch(err){ alert('Network error adding employee'); }
+    closeModal('addEmployeeModal');
+  });
+
+  function prependManager(pm){
+    const list = document.getElementById('managerList');
+    const el = document.createElement('div');
+    el.className='user-item';
+    el.onclick = () => selectManager(pm.id, el);
+    el.innerHTML = `<h4>${pm.name}</h4><p>${pm.role}</p><span class="company">${pm.department}</span>`;
+    list.prepend(el);
+  }
+
+  function prependEmployee(emp){
+    const list = document.getElementById('employeeList');
+    const el = document.createElement('div');
+    el.className='user-item';
+    el.onclick = () => selectEmployee(emp.id, el);
+    el.innerHTML = `<h4>${emp.name}</h4><p>${emp.title}</p><span class="experience">${emp.experience_years} yrs</span><div class="skills">${(emp.skills||[]).slice(0,3).join(', ')}</div>`;
+    list.prepend(el);
+  }
+
+  function closeModal(modalId){ document.getElementById(modalId).classList.remove('show'); }
+  function openAddManagerModal(){ document.getElementById('addManagerModal').classList.add('show'); }
+  function openAddEmployeeModal(){ document.getElementById('addEmployeeModal').classList.add('show'); }
+
+  // Allow clicking outside to close
+  window.onclick = function(ev){ if (ev.target.classList.contains('modal')) ev.target.classList.remove('show'); };
+
+  // Style for team lead messages
   const styleTag = document.createElement('style');
   styleTag.innerHTML = `.message.teamlead { border-left-color:#16a085; background:#ecf9f6; }`;
   document.head.appendChild(styleTag);
 
-  // Splitter functionality
-  let isDragging = false;
-  let startX = 0;
-  let startWidth = 0;
-
-  document.getElementById('splitter').addEventListener('mousedown', function(e) {
-    isDragging = true;
-    startX = e.clientX;
-    const profileColumn = document.getElementById('profileColumn');
-    startWidth = parseInt(window.getComputedStyle(profileColumn).width, 10);
-    
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
-    this.classList.add('dragging');
-    
-    e.preventDefault();
+  // Splitter drag logic (unchanged)
+  let isDragging=false, startX=0, startWidth=0;
+  document.getElementById('splitter').addEventListener('mousedown', function(e){
+    isDragging=true; startX=e.clientX; const profileColumn=document.getElementById('profileColumn'); startWidth=parseInt(window.getComputedStyle(profileColumn).width,10); document.body.style.cursor='col-resize'; document.body.style.userSelect='none'; this.classList.add('dragging'); e.preventDefault();
   });
-
-  document.addEventListener('mousemove', function(e) {
-    if (!isDragging) return;
-    
-    const dx = e.clientX - startX;
-    const newWidth = startWidth + dx;
-    const flexibleColumns = document.querySelector('.flexible-columns');
-    const totalWidth = flexibleColumns.offsetWidth - 5; // minus splitter width
-    
-    // Ensure minimum widths
-    if (newWidth >= 250 && (totalWidth - newWidth) >= 250) {
-      const profileColumn = document.getElementById('profileColumn');
-      const conversationColumn = document.getElementById('conversationColumn');
-      
-      profileColumn.style.flex = 'none';
-      profileColumn.style.width = newWidth + 'px';
-      
-      conversationColumn.style.flex = '1';
-      conversationColumn.style.width = 'auto';
-    }
-  });
-
-  document.addEventListener('mouseup', function() {
-    if (isDragging) {
-      isDragging = false;
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
-      document.getElementById('splitter').classList.remove('dragging');
-    }
-  });
+  document.addEventListener('mousemove', function(e){ if(!isDragging)return; const dx=e.clientX-startX; const newWidth=startWidth+dx; const flex=document.querySelector('.flexible-columns'); const total=flex.offsetWidth-5; if(newWidth>=250 && (total-newWidth)>=250){ const profileColumn=document.getElementById('profileColumn'); const conversationColumn=document.getElementById('conversationColumn'); profileColumn.style.flex='none'; profileColumn.style.width=newWidth+'px'; conversationColumn.style.flex='1'; conversationColumn.style.width='auto'; } });
+  document.addEventListener('mouseup', function(){ if(isDragging){ isDragging=false; document.body.style.cursor=''; document.body.style.userSelect=''; document.getElementById('splitter').classList.remove('dragging'); } });
 </script>
 {% endblock %}

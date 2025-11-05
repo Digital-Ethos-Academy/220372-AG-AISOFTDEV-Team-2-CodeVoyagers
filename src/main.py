@@ -23,6 +23,27 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from utils import setup_llm_client, get_completion, save_artifact, load_environment, RECOMMENDED_MODELS
+from utils.database import init_db, fetch_project_managers, fetch_employees, fetch_project_manager, fetch_employee, insert_project_manager, insert_employee
+import threading
+
+CONVERSATION_FILE = os.path.join(project_root, 'artifacts', 'conversations.json')
+_conv_lock = threading.Lock()
+
+def _load_conversations():
+    if not os.path.exists(CONVERSATION_FILE):
+        os.makedirs(os.path.dirname(CONVERSATION_FILE), exist_ok=True)
+        with open(CONVERSATION_FILE, 'w', encoding='utf-8') as f:
+            json.dump({}, f)
+    with open(CONVERSATION_FILE, 'r', encoding='utf-8') as f:
+        try:
+            return json.load(f)
+        except Exception:
+            return {}
+
+def _save_conversations(data: dict):
+    with _conv_lock:
+        with open(CONVERSATION_FILE, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
 
 # Global variables for LLM client
 client = None
@@ -34,6 +55,8 @@ async def lifespan(app: FastAPI):
     # Startup
     global client, model_name, api_provider
     try:
+        # Initialize database (idempotent)
+        init_db(force=False)
         # Try to use gemini-2.5-pro if available, otherwise use the first available model
         if "gemini-2.5-pro" in RECOMMENDED_MODELS:
             default_model = "gemini-2.5-pro"
@@ -120,6 +143,212 @@ def status():
 def get_models():
     """Return all configured models."""
     return JSONResponse({'models': RECOMMENDED_MODELS})
+
+
+@app.get('/api/project-managers')
+def get_project_managers():
+    try:
+        data = fetch_project_managers()
+        return JSONResponse({'project_managers': data})
+    except Exception as e:
+        return JSONResponse({'error': str(e)}, status_code=500)
+
+@app.get('/api/project-managers/{mid}')
+def get_project_manager_by_id(mid: int):
+    pm = fetch_project_manager(mid)
+    if pm:
+        return JSONResponse({'project_manager': pm})
+    return JSONResponse({'error': 'Project Manager not found'}, status_code=404)
+
+@app.post('/api/project-managers')
+async def create_project_manager(request: Request):
+    try:
+        payload = await request.json()
+        pm = insert_project_manager(payload)
+        return JSONResponse({'project_manager': pm})
+    except Exception as e:
+        return JSONResponse({'error': str(e)}, status_code=400)
+
+@app.get('/api/employees')
+def get_employees():
+    try:
+        data = fetch_employees()
+        return JSONResponse({'employees': data})
+    except Exception as e:
+        return JSONResponse({'error': str(e)}, status_code=500)
+
+@app.get('/api/employees/{eid}')
+def get_employee_by_id(eid: int):
+    emp = fetch_employee(eid)
+    if emp:
+        return JSONResponse({'employee': emp})
+    return JSONResponse({'error': 'Employee not found'}, status_code=404)
+
+@app.post('/api/employees')
+async def create_employee(request: Request):
+    try:
+        payload = await request.json()
+        if isinstance(payload.get('skills'), str):
+            payload['skills'] = [s.strip() for s in payload['skills'].split(',') if s.strip()]
+        emp = insert_employee(payload)
+        return JSONResponse({'employee': emp})
+    except Exception as e:
+        return JSONResponse({'error': str(e)}, status_code=400)
+
+
+def _llm_generate_json(prompt: str, schema_description: str) -> Optional[dict]:
+    """Helper to call LLM to get structured JSON-like data. Falls back to None on failure."""
+    if client is None:
+        return None
+    full_prompt = f"You are a data generator. {schema_description}\nPrompt: {prompt}\nReturn ONLY minified JSON.".strip()
+    try:
+        raw = get_completion(full_prompt, client, model_name, api_provider)
+        # Attempt to locate JSON substring
+        start = raw.find('{')
+        end = raw.rfind('}')
+        if start != -1 and end != -1 and end > start:
+            import json as _json
+            snippet = raw[start:end+1]
+            return _json.loads(snippet)
+    except Exception:
+        return None
+    return None
+
+
+@app.post('/api/generate/project-manager')
+async def generate_project_manager(request: Request):
+    """Generate project manager data optionally based on a user prompt."""
+    data = await request.json() if request.headers.get('content-type','').startswith('application/json') else {}
+    user_prompt = data.get('prompt', '').strip()
+    base_prompt = user_prompt or "Generate a realistic senior software project manager profile overseeing engineering delivery."
+    schema_desc = "Return JSON with keys: name, role, department, email, experience_years (int), focus_area."
+    result = _llm_generate_json(base_prompt, schema_desc)
+    if result is None:
+        import random
+        sample_names = ["Sarah Johnson", "Michael Chen", "Emma Rodriguez", "David Park", "Lisa Thompson"]
+        sample_roles = ["Senior Project Manager", "Technical Project Manager", "Program Manager", "Delivery Lead", "Agile Coach"]
+        sample_departments = ["Platform Engineering", "Data Science", "AI Initiatives", "Cloud Services", "Product Enablement"]
+        name = random.choice(sample_names)
+        role = random.choice(sample_roles)
+        dept = random.choice(sample_departments)
+        result = {
+            'name': name,
+            'role': role,
+            'department': dept,
+            'email': f"{name.lower().replace(' ', '.')}@example.com",
+            'experience_years': random.randint(5,15),
+            'focus_area': 'Delivery Optimization'
+        }
+    return JSONResponse({'project_manager': result})
+
+
+@app.post('/api/generate/employee')
+async def generate_employee(request: Request):
+    """Generate employee data optionally based on a user prompt."""
+    data = await request.json() if request.headers.get('content-type','').startswith('application/json') else {}
+    user_prompt = data.get('prompt', '').strip()
+    base_prompt = user_prompt or "Generate a realistic software engineer employee profile with current performance indicators and growth potential." 
+    schema_desc = "Return JSON with keys: name, title, experience_years (int), education, location, skills (list of 4-8), metrics (object with 3-5 performance indicators like Velocity, Quality Score, Projects Delivered), summary (short paragraph)."
+    result = _llm_generate_json(base_prompt, schema_desc)
+    if result is None:
+        import random
+        sample_names = ["Christopher Taylor", "Sarah Chang", "Marcus Johnson", "Elena Rodriguez", "David Kim"]
+        sample_titles = ["Frontend Developer", "DevOps Engineer", "UX Designer", "Product Manager", "Software Architect"]
+        sample_locations = ["Seattle, WA", "Austin, TX", "Denver, CO", "Portland, OR", "Chicago, IL"]
+        sample_educations = ["BS Computer Science - UC Berkeley", "MS Software Engineering - Georgia Tech", "BS Information Systems - University of Texas", "MS Computer Science - Carnegie Mellon", "BS Engineering - Purdue University"]
+        skill_sets = [
+            ["React", "TypeScript", "Testing", "Accessibility"],
+            ["Kubernetes", "Terraform", "Go", "Observability"],
+            ["Figma", "Design Systems", "User Research", "Prototyping"],
+            ["Roadmapping", "Agile", "Stakeholder Management", "Data Analysis"],
+            ["Distributed Systems", "Architecture", "Python", "Microservices"]
+        ]
+        name = random.choice(sample_names)
+        title = random.choice(sample_titles)
+        location = random.choice(sample_locations)
+        education = random.choice(sample_educations)
+        skills = random.choice(skill_sets)
+        experience_years = random.randint(1,12)
+        metrics = {"Projects Delivered": str(random.randint(5,40)), "Quality Score": f"{random.randint(80,97)}/100", "Velocity": f"{random.randint(12,30)} story points/sprint"}
+        summary = f"Consistent {title.lower()} with {experience_years} years of experience delivering impactful features. Strengths in {skills[0]} and {skills[1]} with growing leadership potential."
+        result = {
+            'name': name,
+            'title': title,
+            'experience_years': experience_years,
+            'education': education,
+            'location': location,
+            'skills': skills,
+            'metrics': metrics,
+            'summary': summary
+        }
+    return JSONResponse({'employee': result})
+
+
+def _conversation_key(manager_id: int, employee_id: int) -> str:
+    return f"pm{manager_id}-emp{employee_id}"
+
+def _seed_conversation(manager: dict, employee: dict):
+    manager_name = manager['name']
+    return [
+        { 'role': 'manager', 'speaker': manager_name, 'text': f"Reviewing {employee['name']}'s recent performance: {employee['experience_years']} years experience and strong delivery in {', '.join(employee['skills'][:2])}." },
+        { 'role': 'manager', 'speaker': manager_name, 'text': f"Key metric snapshot shows {next(iter(employee['metrics'].items()))[0]} at {next(iter(employee['metrics'].items()))[1]}. Assessing readiness for upcoming strategic initiative." },
+        { 'role': 'lead', 'speaker': 'Tech Lead', 'text': f"{employee['name']} has been consistent. Their summary indicates reliability: {employee['summary'][:80]}..." },
+        { 'role': 'manager', 'speaker': manager_name, 'text': f"Agreed. Considering assigning them to a high-impact task leveraging their background in {employee['education'].split(' - ')[0]}." }
+    ]
+
+@app.get('/api/conversation')
+def get_conversation(manager_id: int, employee_id: int):
+    convs = _load_conversations()
+    key = _conversation_key(manager_id, employee_id)
+    if key not in convs:
+        manager = fetch_project_manager(manager_id)
+        employee = fetch_employee(employee_id)
+        if not manager or not employee:
+            return JSONResponse({'error': 'Invalid manager or employee id'}, status_code=400)
+        convs[key] = _seed_conversation(manager, employee)
+        _save_conversations(convs)
+    return JSONResponse({'conversation': convs[key]})
+
+@app.post('/api/conversation/continue')
+async def continue_conversation(request: Request):
+    payload = await request.json()
+    manager_id = payload.get('manager_id')
+    employee_id = payload.get('employee_id')
+    if manager_id is None or employee_id is None:
+        return JSONResponse({'error': 'manager_id and employee_id required'}, status_code=400)
+    convs = _load_conversations()
+    key = _conversation_key(manager_id, employee_id)
+    if key not in convs:
+        manager = fetch_project_manager(manager_id)
+        employee = fetch_employee(employee_id)
+        if not manager or not employee:
+            return JSONResponse({'error': 'Invalid manager or employee id'}, status_code=400)
+        convs[key] = _seed_conversation(manager, employee)
+    extension_prompt = f"Add two concise evaluation lines where project manager {fetch_project_manager(manager_id)['name']} discusses employee {fetch_employee(employee_id)['name']}'s readiness for a strategic task. Return JSON list of message objects with role, speaker, text." 
+    llm_lines = _llm_generate_json(extension_prompt, "Return an array of message objects: [{role: string, speaker: string, text: string}, ...]") if client else None
+    if isinstance(llm_lines, list):
+        convs[key].extend(llm_lines[:2])
+    else:
+        convs[key].append({'role': 'manager', 'speaker': fetch_project_manager(manager_id)['name'], 'text': 'Preparing growth plan and assigning them to a higher complexity feature set next sprint.'})
+        convs[key].append({'role': 'lead', 'speaker': 'Tech Lead', 'text': 'Recommend pairing with a senior engineer for architectural mentoring.'})
+    _save_conversations(convs)
+    return JSONResponse({'conversation': convs[key]})
+
+@app.post('/api/conversation/comment')
+async def add_comment(request: Request):
+    payload = await request.json()
+    manager_id = payload.get('manager_id')
+    employee_id = payload.get('employee_id')
+    comment = payload.get('text', '').strip()
+    if not comment:
+        return JSONResponse({'error': 'text required'}, status_code=400)
+    convs = _load_conversations()
+    key = _conversation_key(manager_id, employee_id)
+    if key not in convs:
+        return JSONResponse({'error': 'Conversation not found'}, status_code=404)
+    convs[key].append({'role': 'teamlead', 'speaker': 'Team Lead', 'text': comment})
+    _save_conversations(convs)
+    return JSONResponse({'conversation': convs[key]})
 
 
 @app.get('/api/all-models')
