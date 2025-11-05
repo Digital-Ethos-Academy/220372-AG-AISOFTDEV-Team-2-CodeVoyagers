@@ -6,6 +6,8 @@
 <h1>Performance Evaluation Dashboard</h1>
 <p>Project managers review employee metrics, skills, and readiness for strategic tasks.</p>
 
+<div id="actionStatusBar" class="status-bar"></div>
+
 <div class="dashboard-container">
   <div class="fixed-columns">
   <!-- Column 1: Project Managers -->
@@ -41,9 +43,9 @@
 
     <!-- Column 4: Conversation Output -->
     <div class="column" id="conversationColumn">
-  <h3>Performance Discussion</h3>
+  <h3>Potential Discussion</h3>
       <div id="conversationOutput" class="conversation-output">
-  <p>Select both a project manager and an employee to generate discussion insights.</p>
+  <p>Select both a project manager and an employee to explore growth and role potential.</p>
       </div>
     </div>
   </div>
@@ -80,6 +82,18 @@
       <div class="form-group">
         <label for="managerFocus">Primary Focus Area:</label>
         <input type="text" id="managerFocus" name="focus_area" placeholder="e.g. Scalability, Delivery, Quality" required>
+      </div>
+      <div class="form-group">
+        <label for="managerActiveProject">Active Project Name:</label>
+        <input type="text" id="managerActiveProject" name="active_project" placeholder="e.g. Event Stream Platform" required>
+      </div>
+      <div class="form-group">
+        <label for="managerProjectSummary">Project Summary:</label>
+        <textarea id="managerProjectSummary" name="project_summary" placeholder="Brief one sentence description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="managerRequiredSkills">Required Skills (comma-separated):</label>
+        <textarea id="managerRequiredSkills" name="required_skills" placeholder="React, Node.js, Kafka, Python" required></textarea>
       </div>
       <div class="form-actions">
     <button type="button" class="btn-generate" onclick="openPromptModal('project-manager')">Generate Data</button>
@@ -123,6 +137,10 @@
   <textarea id="employeeSkills" name="skills" placeholder="React, Node.js, Python..." required></textarea>
       </div>
       <div class="form-group">
+        <label for="employeeMetrics">Performance Metrics (comma-separated 'Key: value' pairs):</label>
+        <textarea id="employeeMetrics" name="metrics" placeholder="Projects Delivered: 12, Quality Score: 91, Velocity: 24, Skill Alignment Score: 78"></textarea>
+      </div>
+      <div class="form-group">
   <label for="employeeSummary">Performance Summary:</label>
   <textarea id="employeeSummary" name="summary" required></textarea>
       </div>
@@ -157,6 +175,36 @@
 
 {% block scripts %}
 <script>
+  // Loading / notification utilities
+  function setLoading(btn, isLoading, loadingText='Processing...') {
+    if (!btn) return;
+    if (isLoading) {
+      btn.dataset.originalText = btn.textContent;
+      btn.classList.add('loading');
+      btn.innerHTML = `<span class="spinner"></span>${loadingText}`;
+      btn.disabled = true;
+      showStatus(loadingText);
+    } else {
+      btn.classList.remove('loading');
+      btn.innerHTML = btn.dataset.originalText || 'Submit';
+      btn.disabled = false;
+      clearStatus();
+    }
+  }
+
+  function showStatus(message) {
+    const bar = document.getElementById('actionStatusBar');
+    if (!bar) return;
+    bar.textContent = message;
+    bar.classList.add('visible');
+  }
+  function clearStatus() {
+    const bar = document.getElementById('actionStatusBar');
+    if (!bar) return;
+    bar.textContent = '';
+    bar.classList.remove('visible');
+  }
+
   // State
   let selectedManager = null;
   let selectedEmployee = null;
@@ -276,10 +324,13 @@
       discussionHistory = [];
       return;
     }
+    const refreshBtn = document.querySelector('button.btn-primary[onclick="refreshDiscussion()"]');
+    setLoading(refreshBtn, true, 'Loading discussion...');
     fetch(`/api/conversation?manager_id=${selectedManager}&employee_id=${selectedEmployee}`)
       .then(r=>r.json())
       .then(data => { discussionHistory = data.conversation || []; renderDiscussion(); })
-      .catch(()=>{ discussionHistory=[]; renderDiscussion(); });
+      .catch(()=>{ discussionHistory=[]; renderDiscussion(); })
+      .finally(()=> setLoading(refreshBtn, false));
   }
 
   function renderDiscussion() {
@@ -288,43 +339,102 @@
     let html = `<div class="conversation"><div class="conversation-header"><h5>Discussion about ${emp?.name||'Employee'}</h5><p>Project Manager: ${pmName}</p></div><div class="conversation-messages">`;
     html += discussionHistory.map(msg => {
   let cls = 'message manager';
-      if (msg.role === 'lead') cls = 'message colleague';
+      if (msg.role === 'hr') cls = 'message hr';
       if (msg.role === 'teamlead') cls = 'message teamlead';
-  if (msg.role === 'manager') cls = 'message manager';
+      if (msg.role === 'manager') cls = 'message manager';
       return `<div class="${cls}"><strong>${msg.speaker}:</strong> ${msg.text}</div>`;
     }).join('');
     html += `</div><div class="conversation-actions">`;
     html += `<button onclick="refreshDiscussion()" class="btn-primary">Refresh Discussion</button>`;
+    html += `<button onclick="newDiscussion()" class="btn-primary" style="background:#e74c3c">New Discussion</button>`;
     html += `<button onclick="continueDiscussion()" class="btn-primary" style="background:#8e44ad">Continue Discussion</button>`;
     html += `<button onclick="toggleInjectComment()" class="btn-primary" style="background:#16a085">Inject Team Lead Comment</button>`;
     html += `</div>`;
-    html += `<div id="injectCommentArea" style="display:none; margin-top:1rem;" class="card"><h5>Team Lead Comment</h5><textarea id="teamLeadInput" style="width:100%; min-height:80px;"></textarea><div style="text-align:right; margin-top:0.5rem;"><button class="btn-primary" onclick="submitTeamLeadComment()" style="background:#16a085">Add Comment</button><button class="btn-secondary" onclick="toggleInjectComment()">Cancel</button></div></div>`;
+    html += `<div id="injectCommentArea" style="display:none; margin-top:1rem;" class="card">`;
+    html += `<h5>Team Lead Comment</h5>`;
+    html += `<textarea id="teamLeadInput" style="width:100%; min-height:80px;" placeholder="Enter your question or comment about this employee..."></textarea>`;
+    html += `<div style="text-align:right; margin-top:0.5rem;">`;
+    html += `<button class="btn-primary" onclick="submitTeamLeadComment()" style="background:#16a085">Add Comment</button>`;
+    html += `<button class="btn-secondary" onclick="toggleInjectComment()">Cancel</button>`;
+    html += `</div></div>`;
     html += `</div>`;
     document.getElementById('conversationOutput').innerHTML = html;
   }
 
   function refreshDiscussion(){ updateDiscussion(); }
 
+  function newDiscussion() {
+    if (!selectedManager || !selectedEmployee) return;
+    const btn = document.querySelector('button.btn-primary[onclick="newDiscussion()"]');
+    setLoading(btn, true, 'Starting new discussion...');
+    fetch('/api/conversation/new', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({manager_id: selectedManager, employee_id: selectedEmployee})})
+      .then(r=>r.json())
+      .then(data => { discussionHistory = data.conversation || []; renderDiscussion(); })
+      .finally(()=> setLoading(btn, false));
+  }
+
   function continueDiscussion() {
     if (!selectedManager || !selectedEmployee) return;
+    const btn = document.querySelector('button.btn-primary[onclick="continueDiscussion()"]');
+    // Check if last message is a team lead comment needing answer
+    const pending = discussionHistory.length && discussionHistory[discussionHistory.length-1].role === 'teamlead';
+    setLoading(btn, true, pending ? 'Analyzing team lead comment and generating response...' : 'Extending discussion...');
     fetch('/api/conversation/continue', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({manager_id: selectedManager, employee_id: selectedEmployee})})
       .then(r=>r.json())
-      .then(data => { discussionHistory = data.conversation || discussionHistory; renderDiscussion(); });
+      .then(data => { discussionHistory = data.conversation || discussionHistory; renderDiscussion(); })
+      .finally(()=> setLoading(btn, false));
   }
 
   function toggleInjectComment() {
+    console.log('toggleInjectComment called');
     const area = document.getElementById('injectCommentArea');
-    if (!area) return;
-    area.style.display = area.style.display === 'none' ? 'block' : 'none';
+    if (!area) {
+      console.log('injectCommentArea not found');
+      return;
+    }
+    const isHidden = area.style.display === 'none' || area.style.display === '';
+    area.style.display = isHidden ? 'block' : 'none';
+    console.log('Comment area display:', area.style.display);
   }
 
   function submitTeamLeadComment() {
+    console.log('submitTeamLeadComment called');
     const input = document.getElementById('teamLeadInput');
+    if (!input) {
+      console.log('teamLeadInput not found');
+      return;
+    }
     const val = input.value.trim();
-    if (!val) return;
+    if (!val) {
+      console.log('No comment text entered');
+      return;
+    }
+    
+    if (!selectedManager || !selectedEmployee) {
+      console.log('No manager or employee selected');
+      return;
+    }
+    
+    const submitBtn = document.querySelector('#injectCommentArea button.btn-primary');
+    setLoading(submitBtn, true, 'Adding comment...');
     fetch('/api/conversation/comment', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({manager_id: selectedManager, employee_id: selectedEmployee, text: val})})
       .then(r=>r.json())
-      .then(data => { discussionHistory = data.conversation || discussionHistory; input.value=''; toggleInjectComment(); renderDiscussion(); });
+      .then(data => { 
+        console.log('Comment added successfully:', data);
+        discussionHistory = data.conversation || discussionHistory; 
+        input.value=''; 
+        toggleInjectComment(); 
+        renderDiscussion();
+        // Auto-continue the discussion to get AI/enhanced response to the team lead comment
+        setTimeout(() => {
+          showStatus('Generating response to team lead comment...');
+          continueDiscussion();
+        }, 500);
+      })
+      .catch(error => {
+        console.error('Error adding comment:', error);
+      })
+      .finally(()=> setLoading(submitBtn, false));
   }
 
   // Generation modal
@@ -338,17 +448,20 @@
   document.getElementById('promptForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const prompt = document.getElementById('generationPrompt').value.trim();
+    const modalBtn = document.querySelector('#promptForm button.btn-primary');
+    setLoading(modalBtn, true, 'Generating...');
     if (generationTarget === 'project-manager') {
       await generateManagerData(prompt);
     } else if (generationTarget === 'employee') {
       await generateEmployeeData(prompt);
     }
+    setLoading(modalBtn, false);
     closeModal('promptModal');
   });
 
   async function generateManagerData(promptText){
-    const btn = document.querySelector('#managerForm .btn-generate');
-    if (btn){ btn.disabled=true; btn.textContent='Generating...'; }
+  const btn = document.querySelector('#managerForm .btn-generate');
+  setLoading(btn, true, 'Generating manager...');
     try {
       const res = await fetch('/api/generate/project-manager', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt: promptText||''})});
       const data = await res.json();
@@ -359,15 +472,18 @@
       document.getElementById('managerEmail').value = pm.email || '';
       document.getElementById('managerExperience').value = pm.experience_years || '';
       document.getElementById('managerFocus').value = pm.focus_area || '';
+      document.getElementById('managerActiveProject').value = pm.active_project || '';
+      document.getElementById('managerProjectSummary').value = pm.project_summary || '';
+      document.getElementById('managerRequiredSkills').value = (pm.required_skills||[]).join(', ');
     } catch(err){ alert('Error generating project manager data'); }
-    finally { if (btn){ btn.disabled=false; btn.textContent='Generate Data'; } }
+    finally { setLoading(btn, false); }
   }
 
   async function generateEmployeeData(promptText){
-    const btn = document.querySelector('#employeeForm .btn-generate');
-    if (btn){ btn.disabled=true; btn.textContent='Generating...'; }
+  const btn = document.querySelector('#employeeForm .btn-generate');
+  setLoading(btn, true, 'Generating employee...');
     try {
-      const res = await fetch('/api/generate/employee', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt: promptText||''})});
+      const res = await fetch('/api/generate/employee', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt: promptText||'', manager_id: selectedManager})});
       const data = await res.json();
       const emp = data.employee;
       document.getElementById('employeeName').value = emp.name || '';
@@ -377,8 +493,11 @@
       document.getElementById('employeeLocation').value = emp.location || '';
       document.getElementById('employeeSkills').value = (emp.skills||[]).join(', ');
       document.getElementById('employeeSummary').value = emp.summary || '';
+      const m = emp.metrics || {};
+      const metricsText = Object.entries(m).map(([k,v])=>`${k}: ${v}`).join(', ');
+      document.getElementById('employeeMetrics').value = metricsText;
     } catch(err){ alert('Error generating employee data'); }
-    finally { if (btn){ btn.disabled=false; btn.textContent='Generate Data'; } }
+    finally { setLoading(btn, false); }
   }
 
   // Form submissions
@@ -391,14 +510,21 @@
       department: f.department.value.trim(),
       email: f.email.value.trim(),
       experience: parseInt(f.experience.value,10)||0,
-      focus_area: f.focus_area.value.trim()
+      focus_area: f.focus_area.value.trim(),
+      active_project: f.active_project.value.trim(),
+      project_summary: f.project_summary.value.trim(),
+      required_skills: f.required_skills.value.split(',').map(s=>s.trim()).filter(Boolean)
     };
+    const submitBtn = f.querySelector('button.btn-primary[type="submit"]');
+  // Correct boolean usage (was 'True')
+  setLoading(submitBtn, true, 'Saving manager...');
     try {
       const res = await fetch('/api/project-managers', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
       const data = await res.json();
       if (data.project_manager){ managerData[data.project_manager.id] = data.project_manager; prependManager(data.project_manager); }
       else alert('Error adding project manager');
     } catch(err){ alert('Network error adding project manager'); }
+    finally { setLoading(submitBtn, false); }
     closeModal('addManagerModal');
   });
 
@@ -406,6 +532,20 @@
     e.preventDefault();
     const f = e.target;
     const skillsArr = f.skills.value.split(',').map(s=>s.trim()).filter(Boolean);
+    // Parse metrics textarea (Key: value, Key2: value ...)
+    const metrics = {};
+    const rawMetrics = f.metrics.value.trim();
+    if(rawMetrics){
+      rawMetrics.split(',').map(p=>p.trim()).filter(Boolean).forEach(pair=>{
+        const idx = pair.indexOf(':');
+        if(idx>0){
+          const key = pair.slice(0,idx).trim();
+          const valRaw = pair.slice(idx+1).trim();
+          const num = parseInt(valRaw,10);
+          metrics[key] = isNaN(num) ? valRaw : num;
+        }
+      });
+    }
     const payload = {
       name: f.name.value.trim(),
       title: f.title.value.trim(),
@@ -413,14 +553,18 @@
       education: f.education.value.trim(),
       location: f.location.value.trim(),
       skills: skillsArr,
-      summary: f.summary.value.trim()
+      summary: f.summary.value.trim(),
+      metrics: metrics
     };
+    const submitBtn = f.querySelector('button.btn-primary[type="submit"]');
+    setLoading(submitBtn, true, 'Saving employee...');
     try {
       const res = await fetch('/api/employees', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
       const data = await res.json();
       if (data.employee){ employeeData[data.employee.id] = data.employee; prependEmployee(data.employee); }
       else alert('Error adding employee');
     } catch(err){ alert('Network error adding employee'); }
+    finally { setLoading(submitBtn, false); }
     closeModal('addEmployeeModal');
   });
 
@@ -449,9 +593,13 @@
   // Allow clicking outside to close
   window.onclick = function(ev){ if (ev.target.classList.contains('modal')) ev.target.classList.remove('show'); };
 
-  // Style for team lead messages
+  // Style for team lead and HR messages
   const styleTag = document.createElement('style');
-  styleTag.innerHTML = `.message.teamlead { border-left-color:#16a085; background:#ecf9f6; }`;
+  styleTag.innerHTML = `
+    .message.teamlead { border-left-color:#16a085; background:#ecf9f6; }
+    .message.hr { border-left-color:#3498db; background:#ebf3fd; }
+    .message.manager { border-left-color:#e74c3c; background:#fdf2f2; }
+  `;
   document.head.appendChild(styleTag);
 
   // Splitter drag logic (unchanged)

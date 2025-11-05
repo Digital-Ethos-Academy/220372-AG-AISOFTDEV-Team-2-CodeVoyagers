@@ -664,6 +664,13 @@
     </style>
   </head>
   <body>
+<style>
+  .spinner { width:14px; height:14px; border:2px solid #fff; border-top-color: rgba(255,255,255,0.3); border-radius:50%; display:inline-block; animation:spin 0.8s linear infinite; margin-right:6px; vertical-align:middle; }
+  @keyframes spin { to { transform: rotate(360deg);} }
+  button.loading { position:relative; }
+  .status-bar { font-size:0.85rem; padding:4px 10px; background:#f5f7fa; border:1px solid #dce3ec; border-radius:4px; margin:8px 0 16px; min-height:18px; color:#34495e; transition:opacity .25s; opacity:0; }
+  .status-bar.visible { opacity:1; }
+</style>
     <div class="navbar">
       <h1>TEAM 2 - 🚀 CODE VOYAGERS 🚀</h1>
       <nav>
