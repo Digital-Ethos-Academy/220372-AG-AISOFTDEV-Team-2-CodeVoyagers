@@ -265,6 +265,10 @@
     document.querySelectorAll('#managerList .user-item').forEach(n => n.classList.remove('selected'));
     el.classList.add('selected');
     selectedManager = id;
+    // Refresh employee profile if one is already selected so required skills table appears
+    if (selectedEmployee) {
+      updateEmployeeProfile(selectedEmployee);
+    }
     updateDiscussion();
   }
 
@@ -285,6 +289,31 @@
       'Quality Score': 'Normalized code quality/review metric (0-100).',
       'Velocity': 'Average sprint story points completed.'
     };
+    // Build required skills vs overlap table if a project manager is selected
+    let projectSection = '';
+    if (selectedManager && managerData[selectedManager]) {
+      const pm = managerData[selectedManager];
+      const required = (pm.required_skills || []).map(s=>s.trim()).filter(Boolean);
+      if (required.length) {
+        const empSkillsSet = new Set((emp.skills||[]).map(s=>s.toLowerCase()));
+        let matched = 0;
+        const rows = required.map(skill => {
+          const has = empSkillsSet.has(skill.toLowerCase());
+          if (has) matched += 1;
+          return `<tr><td>${skill}</td><td class="${has ? 'match-yes' : 'match-no'}">${has ? '✓ Match' : '✕ Gap'}</td></tr>`;
+        }).join('');
+        const alignmentPct = Math.round((matched / required.length) * 100);
+        projectSection = `
+          <div class="profile-section">
+            <h5>Project Requirements</h5>
+            <p><strong>Project:</strong> ${pm.active_project || '(none)'}<br><strong>Alignment:</strong> ${alignmentPct}% (${matched}/${required.length} matches)</p>
+            <table class="skills-table">
+              <thead><tr><th>Required Skill</th><th>Status</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>`;
+      }
+    }
     profileCard.innerHTML = `
       <div class="profile-header">
         <h4>${emp.name}</h4>
@@ -300,6 +329,7 @@
         <h5>Key Skills</h5>
         <div class="skills-tags">${(emp.skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
       </div>
+      ${projectSection}
       <div class="profile-section">
         <h5>Performance Metrics</h5>
         <div class="metrics">

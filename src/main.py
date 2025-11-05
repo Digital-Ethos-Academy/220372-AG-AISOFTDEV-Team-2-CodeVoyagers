@@ -99,14 +99,6 @@ def get_available_providers():
         available_providers.append('anthropic')
     if os.getenv('HUGGINGFACE_API_KEY'):
         available_providers.append('huggingface')
-    # Note: groq, deepseek, meta providers are referenced in main.py but not implemented in utils/providers
-    # Commenting out until those providers are added
-    # if os.getenv('GROQ_API_KEY'):
-    #     available_providers.append('groq')
-    # if os.getenv('DEEPSEEK_API_KEY'):
-    #     available_providers.append('deepseek')
-    # if os.getenv('META_API_KEY'):
-    #     available_providers.append('meta')
     
     return available_providers
 
@@ -115,11 +107,9 @@ def get_available_providers():
 def index(request: Request):
     return templates.TemplateResponse('index.html', {'request': request, 'active_page': 'index'})
 
-
 @app.get("/models", response_class=HTMLResponse)
 def models(request: Request):
     return templates.TemplateResponse('models.html', {'request': request, 'active_page': 'models'})
-
 
 @app.get('/api/status')
 def status():
@@ -138,12 +128,10 @@ def status():
             'message': f'✅ Ready to use {model_name} via {api_provider}'
         })
 
-
 @app.get('/api/models')
 def get_models():
     """Return all configured models."""
     return JSONResponse({'models': RECOMMENDED_MODELS})
-
 
 @app.post('/api/reset-database')
 def reset_database():
@@ -239,7 +227,6 @@ async def create_employee(request: Request):
     except Exception as e:
         return JSONResponse({'error': str(e)}, status_code=400)
 
-
 def _llm_generate_json(prompt: str, schema_description: str) -> Optional[dict]:
     """Helper to call LLM to get structured JSON-like data. Falls back to None on failure."""
     if client is None:
@@ -320,7 +307,6 @@ def _is_direct_project_question(comment: str) -> bool:
         return False
     return c.startswith('what project') or 'currently leading' in c or ('leading' in c and 'project' in c)
 
-
 @app.post('/api/generate/project-manager')
 async def generate_project_manager(request: Request):
     """Generate project manager data optionally based on a user prompt."""
@@ -358,7 +344,6 @@ async def generate_project_manager(request: Request):
             'required_skills': req_skills
         }
     return JSONResponse({'project_manager': result})
-
 
 @app.post('/api/generate/employee')
 async def generate_employee(request: Request):
@@ -421,7 +406,6 @@ async def generate_employee(request: Request):
             'summary': summary
         }
     return JSONResponse({'employee': result})
-
 
 def _conversation_key(manager_id: int, employee_id: int) -> str:
     return f"pm{manager_id}-emp{employee_id}"
@@ -731,7 +715,6 @@ def get_all_models():
     """Return all configured models, regardless of API key availability."""
     return JSONResponse({'models': RECOMMENDED_MODELS})
 
-
 @app.get('/api/providers')
 def get_providers():
     """Return available providers based on configured API keys."""
@@ -743,15 +726,10 @@ def get_providers():
         'google': 'Google',
         'anthropic': 'Anthropic',
         'huggingface': 'HuggingFace',
-        # Note: groq, deepseek, meta providers are referenced but not implemented
-        # 'groq': 'Groq',
-        # 'deepseek': 'DeepSeek',
-        # 'meta': 'Meta'
     }
     
     provider_names = [display_names.get(p, p.title()) for p in available_providers]
     return JSONResponse({'providers': provider_names})
-
 
 @app.post('/api/test-model')
 def test_model(request_data: ModelTestRequest):
@@ -820,7 +798,6 @@ def test_model(request_data: ModelTestRequest):
         error_msg = f"❌ Error testing {model_name}:\n\n{str(e)}\n\nThis might be due to:\n- Invalid API key for {provider}\n- Network issues\n- Model temporarily unavailable\n- Rate limiting"
         return JSONResponse({'output': error_msg})
 
-
 @app.post('/api/set-default-model')
 def set_default_model(request_data: SetDefaultModelRequest):
     """Set a new default model for the main app."""
@@ -873,7 +850,6 @@ def set_default_model(request_data: SetDefaultModelRequest):
         
     except Exception as e:
         return JSONResponse({'success': False, 'message': f'❌ Error setting default model: {str(e)}'})
-
 
 @app.post('/api/completion')
 def completion():

@@ -419,6 +419,14 @@
         z-index: 21;
         pointer-events: none;
       }
+
+      /* Required skills alignment table */
+      .skills-table { width:100%; border-collapse: collapse; margin-top:0.5rem; }
+      .skills-table th, .skills-table td { border:1px solid #e1e4e8; padding:4px 8px; font-size:0.75rem; text-align:left; }
+      .skills-table th { background:#f1f5f9; font-weight:600; }
+      .skills-table tr:nth-child(even){ background:#fafbfc; }
+      .skills-table td.match-yes { color:#1e824c; font-weight:600; }
+      .skills-table td.match-no { color:#c0392b; font-weight:600; }
       
       .conversation-output {
         background: #f8f9fa;
