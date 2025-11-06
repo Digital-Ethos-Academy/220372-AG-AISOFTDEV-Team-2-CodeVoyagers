@@ -262,18 +262,78 @@ def _llm_generate_json(prompt: str, schema_description: str) -> Optional[dict]:
         print(f"DEBUG: Calling LLM with model {model_name}, provider {api_provider}")
         raw = get_completion(full_prompt, client, model_name, api_provider)
         print(f"DEBUG: LLM raw response: {raw[:200]}...")
-        
-        # Attempt to locate JSON substring
-        start = raw.find('{')
-        end = raw.rfind('}')
-        if start != -1 and end != -1 and end > start:
-            import json as _json
-            snippet = raw[start:end+1]
-            result = _json.loads(snippet)
-            print(f"DEBUG: Successfully parsed JSON: {type(result)}")
-            return result
-        else:
-            print(f"DEBUG: No valid JSON found in response")
+        import json as _json, re
+
+        def _try_parse(candidate: str):
+            try:
+                return _json.loads(candidate)
+            except Exception as pe:
+                raise pe
+
+        # 1. Direct fast path (entire raw is JSON)
+        try:
+            return _try_parse(raw)
+        except Exception:
+            pass
+
+        # 2. Look for first object or array via balanced braces/brackets
+        def _extract_first_json(text: str):
+            stack = []
+            start_idx = None
+            for i, ch in enumerate(text):
+                if ch in '{[':
+                    if not stack:
+                        start_idx = i
+                    stack.append(ch)
+                elif ch in '}]' and stack:
+                    open_ch = stack.pop()
+                    if ((open_ch == '{' and ch == '}') or (open_ch == '[' and ch == ']')) and not stack and start_idx is not None:
+                        snippet = text[start_idx:i+1]
+                        # Attempt parse; if trailing junk exists inside snippet due to LLM hallucination, we'll handle later
+                        try:
+                            return _try_parse(snippet)
+                        except Exception as inner_err:
+                            # Try trimming common trailing artifacts like "..." or unmatched quotes
+                            trimmed = re.sub(r'(\\n)+$', '', snippet).strip()
+                            # Remove trailing incomplete JSON fragments after last matching bracket
+                            last_obj_end = max(trimmed.rfind('}'), trimmed.rfind(']'))
+                            if last_obj_end != -1:
+                                try:
+                                    return _try_parse(trimmed[:last_obj_end+1])
+                                except Exception:
+                                    pass
+                            print(f"DEBUG: Inner parse failure on snippet length {len(snippet)}: {inner_err}")
+                            # Continue searching further in text (LLM might include multiple attempts)
+            return None
+
+        parsed = _extract_first_json(raw)
+        if parsed is not None:
+            print(f"DEBUG: Successfully parsed JSON via balanced scan: {type(parsed)}")
+            return parsed
+
+        # 3. Regex fallback: grab JSON array explicitly if present
+        array_match = re.search(r"\[[\s\S]*?\]", raw)
+        if array_match:
+            candidate = array_match.group(0)
+            try:
+                arr = _try_parse(candidate)
+                print("DEBUG: Parsed JSON via array regex fallback")
+                return arr
+            except Exception as arr_err:
+                print(f"DEBUG: Array regex parse failed: {arr_err}")
+
+        # 4. Object regex fallback
+        obj_match = re.search(r"\{[\s\S]*?\}", raw)
+        if obj_match:
+            candidate = obj_match.group(0)
+            try:
+                obj = _try_parse(candidate)
+                print("DEBUG: Parsed JSON via object regex fallback")
+                return obj
+            except Exception as obj_err:
+                print(f"DEBUG: Object regex parse failed: {obj_err}")
+
+        print("DEBUG: No valid JSON could be salvaged from LLM response")
     except Exception as e:
         print(f"DEBUG: LLM call failed: {e}")
     return None
@@ -534,6 +594,50 @@ def _seed_conversation(manager: dict, employee: dict):
         { 'role': 'manager', 'speaker': manager_name, 'text': next_step }
     ]
 
+def _llm_seed_conversation(manager: dict, employee: dict) -> Optional[list]:
+    """Use LLM to produce the initial 4-message seed conversation.
+    Returns list of messages or None on failure/unavailability."""
+    if client is None:
+        return None
+    try:
+        required = manager.get('required_skills', []) or []
+        overlap_info = _skill_overlap(required, employee.get('skills', [])) if required else {'overlap': [], 'gaps': []}
+        alignment_pct = _compute_alignment(required, employee.get('skills', [])) if required else 0
+        metrics = employee.get('metrics') or {}
+        metric_key, metric_val = (next(iter(metrics.items())) if metrics else ("Velocity", 0))
+        experience_years = employee.get('experience_years') or 0
+        schema_desc = "Return JSON array of exactly 4 objects: [{role:'manager'|'hr', speaker:string, text:string}]"
+        prompt = (
+            "You are seeding a structured performance and project-fit discussion between a Project Manager and HR.\n"
+            f"Project: {manager.get('active_project','(none)')}\n"
+            f"Project Summary: {manager.get('project_summary','')}\n"
+            f"Required Skills: {', '.join(required) or 'TBD'}\n"
+            f"Employee: {employee.get('name')} ({employee.get('title')}) Experience Years: {experience_years}\n"
+            f"Employee Skills: {', '.join(employee.get('skills', []))}\n"
+            f"Metrics: {json.dumps(metrics)} (highlight {metric_key}={metric_val})\n"
+            f"Overlap: {', '.join(overlap_info['overlap']) or 'None'} | Gaps: {', '.join(overlap_info['gaps']) or 'None'} | AlignmentPct: {alignment_pct}\n"
+            "Write four concise messages:\n"
+            "1) Project Manager: Intro reviewing employee (experience years + one metric).\n"
+            "2) Project Manager: Project evaluation citing required skill(s), alignment %, one overlap and one gap if any.\n"
+            "3) HR Representative: HR perspective referencing education and strengths (<= 90 chars for strengths part).\n"
+            "4) Project Manager: Actionable next step (training/pairing/scope) referencing a skill.\n"
+            "Avoid bullet lists or numbering inside the text. No repetition. Return ONLY JSON array."
+        )
+        result = _llm_generate_json(prompt, schema_desc)
+        if not isinstance(result, list):
+            return None
+        cleaned = []
+        for msg in result[:4]:
+            role = (msg.get('role') or 'manager').lower()
+            role = 'manager' if role in ['manager','pm','project_manager'] else ('hr' if role in ['hr','human_resources'] else 'manager')
+            speaker = manager.get('name') if role == 'manager' else 'HR Representative'
+            text = (msg.get('text','') or '').strip()[:500]
+            if text:
+                cleaned.append({'role': role, 'speaker': speaker, 'text': text})
+        return cleaned if len(cleaned) == 4 else None
+    except Exception:
+        return None
+
 @app.get('/api/conversation')
 def get_conversation(manager_id: int, employee_id: int):
     convs = _load_conversations()
@@ -678,6 +782,7 @@ async def new_conversation(request: Request):
     payload = await request.json()
     manager_id = payload.get('manager_id')
     employee_id = payload.get('employee_id')
+    preserve_teamlead = bool(payload.get('preserve_teamlead'))
     if manager_id is None or employee_id is None:
         return JSONResponse({'error': 'manager_id and employee_id required'}, status_code=400)
     
@@ -689,18 +794,33 @@ async def new_conversation(request: Request):
     convs = _load_conversations()
     key = _conversation_key(manager_id, employee_id)
     
+    # Capture existing teamlead comments for optional preservation
+    prior_teamlead = []
+    if preserve_teamlead and key in convs:
+        for msg in convs[key]:
+            if msg.get('role') == 'teamlead':
+                prior_teamlead.append(msg)
+
     # Force re-seed conversation from scratch
     try:
-        convs[key] = _seed_conversation(manager, employee)
+        llm_seed = _llm_seed_conversation(manager, employee)
+        if llm_seed:
+            convs[key] = llm_seed
+        else:
+            convs[key] = _seed_conversation(manager, employee)
     except Exception as e:
         convs[key] = [{
             'role': 'manager',
             'speaker': manager.get('name','Manager'),
             'text': f"Conversation seed unavailable due to data error: {type(e).__name__}."
         }]
+
+    # Append preserved teamlead comments if requested
+    if preserve_teamlead and prior_teamlead:
+        convs[key].extend(prior_teamlead)
     
     _save_conversations(convs)
-    return JSONResponse({'conversation': convs[key]})
+    return JSONResponse({'conversation': convs[key], 'preserved_teamlead': len(prior_teamlead)})
 
 @app.post('/api/conversation/comment')
 async def add_comment(request: Request):

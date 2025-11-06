@@ -204,5 +204,991 @@
       "speaker": "HR Representative",
       "text": "Hobby context: David has 13 hobbies; maintaining balance while addressing no immediate gaps."
     }
+  ],
+  "pm3-emp101": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Anjali Sharma for project 'Org Readiness Initiative': 8 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Anjali Sharma shows strong background in M.S. in Computer Science; summary: Expert in building and deploying large-scale machine learning models. ..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
+    }
+  ],
+  "pm3-emp102": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Ben Carter for project 'Org Readiness Initiative': 4 yrs experience; Velocity=70."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ben Carter shows strong background in B.S. in Software Engineering; summary: Proficient C++ developer with a background in performance optimization..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging B.S. in Software Engineering and strengths in C++, Git."
+    }
+  ],
+  "pm3-emp103": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Carlos Diaz for project 'Org Readiness Initiative': 10 yrs experience; Velocity=90."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Carlos Diaz shows strong background in Ph.D. in Distributed Systems; summary: Leads architecture for the Platform team, specializing in microservice..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging Ph.D. in Distributed Systems and strengths in Go, Microservices."
+    }
+  ],
+  "pm3-emp104": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Diana Ross for project 'Org Readiness Initiative': 5 yrs experience; Velocity=75."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Diana Ross shows strong background in B.S. in Computer Science; summary: Go developer focused on API development and containerization for Proje..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging B.S. in Computer Science and strengths in Docker, Go."
+    }
+  ],
+  "pm3-emp105": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Ethan Hunt for project 'Org Readiness Initiative': 6 yrs experience; Velocity=88."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ethan Hunt shows strong background in B.S. in Information Technology; summary: Manages CI/CD pipelines and Kubernetes clusters for the Infrastructure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging B.S. in Information Technology and strengths in AWS, Bash Scripting."
+    }
+  ],
+  "pm3-emp107": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing George Lee for project 'Org Readiness Initiative': 3 yrs experience; Velocity=95."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: George Lee shows strong background in Coding Bootcamp Graduate; summary: Specializes in building responsive and accessible user interfaces with..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging Coding Bootcamp Graduate and strengths in CSS, JavaScript."
+    }
+  ],
+  "pm3-emp106": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Fiona Glen for project 'Org Readiness Initiative': 9 yrs experience; Velocity=82."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Fiona Glen shows strong background in M.S. in Cloud Computing; summary: Designs and implements cloud infrastructure solutions on AWS and Azure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging M.S. in Cloud Computing and strengths in AWS, Azure."
+    }
+  ],
+  "pm3-emp109": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Ivan Petrov for project 'Org Readiness Initiative': 7 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ivan Petrov shows strong background in M.S. in Computer Engineering; summary: Experienced Go developer with a strong focus on backend services and d..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging M.S. in Computer Engineering and strengths in Docker, Go."
+    }
+  ],
+  "pm3-emp110": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Jasmine Singh for project 'Org Readiness Initiative': 4 yrs experience; Velocity=78."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 50%. Overlap: Data Analysis. Gaps: Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Jasmine Singh shows strong background in M.S. in Data Science; summary: Focuses on data analysis and feature engineering for the AI/ML team...."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging M.S. in Data Science and strengths in Data Analysis, Pandas."
+    }
+  ],
+  "pm4-emp110": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Jasmine Singh for project 'Project Stratus': 4 yrs experience; Velocity=78."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Jasmine Singh shows strong background in M.S. in Data Science; summary: Focuses on data analysis and feature engineering for the AI/ML team...."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging M.S. in Data Science and strengths in Data Analysis, Pandas."
+    }
+  ],
+  "pm4-emp109": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Ivan Petrov for project 'Project Stratus': 7 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ivan Petrov shows strong background in M.S. in Computer Engineering; summary: Experienced Go developer with a strong focus on backend services and d..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging M.S. in Computer Engineering and strengths in Docker, Go."
+    }
+  ],
+  "pm4-emp108": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Hannah Kim for project 'Project Stratus': 5 yrs experience; Velocity=80."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Hannah Kim shows strong background in B.A. in Graphic Design; summary: Leads user research and interface design for Project Horizon, ensuring..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging B.A. in Graphic Design and strengths in Agile Methodology, Figma."
+    }
+  ],
+  "pm4-emp107": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing George Lee for project 'Project Stratus': 3 yrs experience; Velocity=95."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: George Lee shows strong background in Coding Bootcamp Graduate; summary: Specializes in building responsive and accessible user interfaces with..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging Coding Bootcamp Graduate and strengths in CSS, JavaScript."
+    }
+  ],
+  "pm4-emp106": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Fiona Glen for project 'Project Stratus': 9 yrs experience; Velocity=82."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 66%. Overlap: AWS, Terraform. Gaps: Kubernetes"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Fiona Glen shows strong background in M.S. in Cloud Computing; summary: Designs and implements cloud infrastructure solutions on AWS and Azure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging M.S. in Cloud Computing and strengths in AWS, Azure."
+    }
+  ],
+  "pm5-emp106": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Fiona Glen for project 'Project Horizon': 9 yrs experience; Velocity=82."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Fiona Glen shows strong background in M.S. in Cloud Computing; summary: Designs and implements cloud infrastructure solutions on AWS and Azure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging M.S. in Cloud Computing and strengths in AWS, Azure."
+    }
+  ],
+  "pm5-emp107": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing George Lee for project 'Project Horizon': 3 yrs experience; Velocity=95."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 33%. Overlap: React. Gaps: Agile Methodology, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: George Lee shows strong background in Coding Bootcamp Graduate; summary: Specializes in building responsive and accessible user interfaces with..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging Coding Bootcamp Graduate and strengths in CSS, JavaScript."
+    }
+  ],
+  "pm5-emp108": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Hannah Kim for project 'Project Horizon': 5 yrs experience; Velocity=80."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 66%. Overlap: Agile Methodology, UX Design. Gaps: React"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Hannah Kim shows strong background in B.A. in Graphic Design; summary: Leads user research and interface design for Project Horizon, ensuring..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging B.A. in Graphic Design and strengths in Agile Methodology, Figma."
+    }
+  ],
+  "pm5-emp109": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Ivan Petrov for project 'Project Horizon': 7 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ivan Petrov shows strong background in M.S. in Computer Engineering; summary: Experienced Go developer with a strong focus on backend services and d..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging M.S. in Computer Engineering and strengths in Docker, Go."
+    }
+  ],
+  "pm5-emp110": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Jasmine Singh for project 'Project Horizon': 4 yrs experience; Velocity=78."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Jasmine Singh shows strong background in M.S. in Data Science; summary: Focuses on data analysis and feature engineering for the AI/ML team...."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging M.S. in Data Science and strengths in Data Analysis, Pandas."
+    }
+  ],
+  "pm5-emp101": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Anjali Sharma for project 'Project Horizon': 8 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Anjali Sharma shows strong background in M.S. in Computer Science; summary: Expert in building and deploying large-scale machine learning models. ..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
+    }
+  ],
+  "pm5-emp102": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Ben Carter for project 'Project Horizon': 4 yrs experience; Velocity=70."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ben Carter shows strong background in B.S. in Software Engineering; summary: Proficient C++ developer with a background in performance optimization..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging B.S. in Software Engineering and strengths in C++, Git."
+    }
+  ],
+  "pm1-emp101": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Anjali Sharma for project 'Project Phoenix': 8 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 100%. Overlap: C++, Machine Learning, Python. Gaps: None"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Anjali Sharma shows strong background in M.S. in Computer Science; summary: Expert in building and deploying large-scale machine learning models. ..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Anjali, your performance on Project Phoenix has been stellar, evidenced by your outstanding Quality Score of 98. Given the project's needs are fully aligned with your skills, the next logical step is for you to take on a technical leadership role, perhaps by mentoring our junior engineers on advanced TensorFlow applications."
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "Anjali is a top performer whose skills are a perfect match for this high-impact project. To support her continued development and engagement, I recommend we formally task her with mentoring two junior engineers. This provides valuable leadership exposure and strengthens the team's overall capability."
+    }
+  ],
+  "pm1-emp113": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Thanks for joining. I'm reviewing Brenda Garcia, who has one year of experience. I'm noting her project velocity is currently at 4."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "For Project Phoenix, we need C++ and Machine Learning. With 0% alignment, no skill overlap, and a clear gap in Python, this is not a fit."
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "Understood. Brenda's degree is in HR. Her strengths are in recruiting coordination, employee onboarding, and compliance reporting."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Given the complete mismatch, let's re-scope her to an HR support role for the project and defer any technical Machine Learning training."
+    }
+  ],
+  "pm3-emp113": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Brenda Garcia for project 'Org Readiness Initiative': 1 yrs experience; Velocity=4."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Brenda Garcia shows strong background in Bachelor of Arts in Psychology; summary: Brenda is a detail-oriented HR Generalist with foundational experience..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging Bachelor of Arts in Psychology and strengths in Benefits Administration, Compliance Reporting."
+    },
+    {
+      "role": "teamlead",
+      "speaker": "Team Lead",
+      "text": "How many hobbies does Brenda Have?"
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "She has 22 hobbies. While her track record of 8 delivered projects is solid, we need to bridge the Data Analysis gap before she can contribute effectively here."
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "Brenda's psychology degree is a good starting point for this type of work. To develop her skills in Workforce Planning, I recommend pairing her with a senior team member for mentorship on this initiative. It's a key growth opportunity."
+    }
+  ],
+  "pm2-emp113": [
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Reviewing Brenda Garcia for project 'Project Chimera': 1 yrs experience; Velocity=4."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Project needs: Go, Leadership, System Design. Alignment 0%. Overlap: . Gaps: Go, Leadership, System Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Brenda Garcia shows strong background in Bachelor of Arts in Psychology; summary: Brenda is a detail-oriented HR Generalist with foundational experience..."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Considering task alignment leveraging Bachelor of Arts in Psychology and strengths in Benefits Administration, Compliance Reporting."
+    }
+  ],
+  "pm4-emp113": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Brenda Garcia for project 'Project Stratus': 1 yrs experience; Velocity=4."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Brenda Garcia shows strong background in Bachelor of Arts in Psychology; summary: Brenda is a detail-oriented HR Generalist with foundational experience..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging Bachelor of Arts in Psychology and strengths in Benefits Administration, Compliance Reporting."
+    }
+  ],
+  "pm3-emp108": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing Hannah Kim for project 'Org Readiness Initiative': 5 yrs experience; Velocity=80."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Hannah Kim shows strong background in B.A. in Graphic Design; summary: Leads user research and interface design for Project Horizon, ensuring..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging B.A. in Graphic Design and strengths in Agile Methodology, Figma."
+    }
+  ],
+  "pm1-emp107": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing George Lee for project 'Project Phoenix': 3 yrs experience; Velocity=95."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 0%. Overlap: . Gaps: C++, Machine Learning, Python"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: George Lee shows strong background in Coding Bootcamp Graduate; summary: Specializes in building responsive and accessible user interfaces with..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging Coding Bootcamp Graduate and strengths in CSS, JavaScript."
+    }
+  ],
+  "pm1-emp103": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Carlos Diaz for project 'Project Phoenix': 10 yrs experience; Velocity=90."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 0%. Overlap: . Gaps: C++, Machine Learning, Python"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Carlos Diaz shows strong background in Ph.D. in Distributed Systems; summary: Leads architecture for the Platform team, specializing in microservice..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging Ph.D. in Distributed Systems and strengths in Go, Microservices."
+    }
+  ],
+  "pm1-emp104": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Diana Ross for project 'Project Phoenix': 5 yrs experience; Velocity=75."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 0%. Overlap: . Gaps: C++, Machine Learning, Python"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Diana Ross shows strong background in B.S. in Computer Science; summary: Go developer focused on API development and containerization for Proje..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging B.S. in Computer Science and strengths in Docker, Go."
+    }
+  ],
+  "pm1-emp105": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Ethan Hunt for project 'Project Phoenix': 6 yrs experience; Velocity=88."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 0%. Overlap: . Gaps: C++, Machine Learning, Python"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ethan Hunt shows strong background in B.S. in Information Technology; summary: Manages CI/CD pipelines and Kubernetes clusters for the Infrastructure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging B.S. in Information Technology and strengths in AWS, Bash Scripting."
+    }
+  ],
+  "pm1-emp106": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Fiona Glen for project 'Project Phoenix': 9 yrs experience; Velocity=82."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 0%. Overlap: . Gaps: C++, Machine Learning, Python"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Fiona Glen shows strong background in M.S. in Cloud Computing; summary: Designs and implements cloud infrastructure solutions on AWS and Azure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging M.S. in Cloud Computing and strengths in AWS, Azure."
+    }
+  ],
+  "pm1-emp110": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Jasmine Singh for project 'Project Phoenix': 4 yrs experience; Velocity=78."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 33%. Overlap: Python. Gaps: C++, Machine Learning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Jasmine Singh shows strong background in M.S. in Data Science; summary: Focuses on data analysis and feature engineering for the AI/ML team...."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging M.S. in Data Science and strengths in Data Analysis, Pandas."
+    }
+  ],
+  "pm2-emp105": [
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Reviewing Ethan Hunt for project 'Project Chimera': 6 yrs experience; Velocity=88."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Project needs: Go, Leadership, System Design. Alignment 0%. Overlap: . Gaps: Go, Leadership, System Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ethan Hunt shows strong background in B.S. in Information Technology; summary: Manages CI/CD pipelines and Kubernetes clusters for the Infrastructure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Considering task alignment leveraging B.S. in Information Technology and strengths in AWS, Bash Scripting."
+    }
+  ],
+  "pm4-emp105": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Ethan Hunt for project 'Project Stratus': 6 yrs experience; Velocity=88."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 66%. Overlap: AWS, Kubernetes. Gaps: Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ethan Hunt shows strong background in B.S. in Information Technology; summary: Manages CI/CD pipelines and Kubernetes clusters for the Infrastructure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging B.S. in Information Technology and strengths in AWS, Bash Scripting."
+    },
+    {
+      "role": "teamlead",
+      "speaker": "Team Lead",
+      "text": "What skills is Ethan missing to be a perfect candidate?"
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "To address the lead's question, the primary skill gap is Terraform. Considering his excellent Quality Score of 96, our next step is to create a rapid upskilling plan to ensure he's fully equipped for Project Stratus."
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "This is a perfect growth opportunity. We can sponsor Ethan for a Terraform certification course. Investing in his skills for this project not only meets our needs but also boosts his engagement by showing a clear path for development."
+    }
+  ],
+  "pm4-emp101": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Anjali Sharma for project 'Project Stratus': 8 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Anjali Sharma shows strong background in M.S. in Computer Science; summary: Expert in building and deploying large-scale machine learning models. ..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
+    }
+  ],
+  "pm4-emp102": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Ben Carter for project 'Project Stratus': 4 yrs experience; Velocity=70."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ben Carter shows strong background in B.S. in Software Engineering; summary: Proficient C++ developer with a background in performance optimization..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging B.S. in Software Engineering and strengths in C++, Git."
+    }
+  ],
+  "pm4-emp103": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Carlos Diaz for project 'Project Stratus': 10 yrs experience; Velocity=90."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Carlos Diaz shows strong background in Ph.D. in Distributed Systems; summary: Leads architecture for the Platform team, specializing in microservice..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging Ph.D. in Distributed Systems and strengths in Go, Microservices."
+    }
+  ],
+  "pm4-emp104": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Diana Ross for project 'Project Stratus': 5 yrs experience; Velocity=75."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 33%. Overlap: Kubernetes. Gaps: AWS, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Diana Ross shows strong background in B.S. in Computer Science; summary: Go developer focused on API development and containerization for Proje..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging B.S. in Computer Science and strengths in Docker, Go."
+    }
+  ],
+  "pm5-emp105": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Ethan Hunt for project 'Project Horizon': 6 yrs experience; Velocity=88."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ethan Hunt shows strong background in B.S. in Information Technology; summary: Manages CI/CD pipelines and Kubernetes clusters for the Infrastructure..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging B.S. in Information Technology and strengths in AWS, Bash Scripting."
+    }
+  ],
+  "pm5-emp103": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Carlos Diaz for project 'Project Horizon': 10 yrs experience; Velocity=90."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Carlos Diaz shows strong background in Ph.D. in Distributed Systems; summary: Leads architecture for the Platform team, specializing in microservice..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging Ph.D. in Distributed Systems and strengths in Go, Microservices."
+    }
+  ],
+  "pm5-emp104": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing Diana Ross for project 'Project Horizon': 5 yrs experience; Velocity=75."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Diana Ross shows strong background in B.S. in Computer Science; summary: Go developer focused on API development and containerization for Proje..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging B.S. in Computer Science and strengths in Docker, Go."
+    }
+  ],
+  "pm1-emp108": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Hannah Kim for project 'Project Phoenix': 5 yrs experience; Velocity=80."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 0%. Overlap: . Gaps: C++, Machine Learning, Python"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Hannah Kim shows strong background in B.A. in Graphic Design; summary: Leads user research and interface design for Project Horizon, ensuring..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging B.A. in Graphic Design and strengths in Agile Methodology, Figma."
+    }
   ]
 }
