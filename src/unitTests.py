@@ -1,6 +1,6 @@
 import json
 import os
-from src import main
+import main
 
 def _json_from_response(resp):
     return json.loads(resp.body)
@@ -24,13 +24,28 @@ def test_status_when_no_client():
 
 
 def test_get_available_providers_with_and_without_env(monkeypatch):
-    for k in ('OPENAI_API_KEY', 'GOOGLE_API_KEY', 'ANTHROPIC_API_KEY', 'HUGGINGFACE_API_KEY'):
-        monkeypatch.delenv(k, raising=False)
+    # Mock load_environment to do nothing (prevent reloading from .env)
+    monkeypatch.setattr('main.load_environment', lambda: None)
+    
+    # Mock os.getenv to simulate empty environment
+    def mock_getenv_empty(key, default=None):
+        return default
+    
+    # Mock os.getenv to simulate only OPENAI_API_KEY
+    def mock_getenv_openai_only(key, default=None):
+        if key == 'OPENAI_API_KEY':
+            return 'testkey'
+        return default
+    
+    # Test with no API keys
+    monkeypatch.setattr('os.getenv', mock_getenv_empty)
     providers = main.get_available_providers()
     assert providers == []
-    monkeypatch.setenv('OPENAI_API_KEY', 'testkey')
+    
+    # Test with only OPENAI_API_KEY
+    monkeypatch.setattr('os.getenv', mock_getenv_openai_only)
     providers = main.get_available_providers()
-    assert 'openai' in providers
+    assert providers == ['openai']
 
 # Using OPENAI
 def test_get_providers_returns_display_names(monkeypatch):
