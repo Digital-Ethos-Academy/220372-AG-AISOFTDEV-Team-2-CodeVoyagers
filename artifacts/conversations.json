@@ -671,32 +671,22 @@
     {
       "role": "manager",
       "speaker": "Priya Patel",
-      "text": "Reviewing Anjali Sharma for project 'Project Phoenix': 8 yrs experience; Velocity=85."
+      "text": "We're here to discuss Anjali Sharma's fit for Project Phoenix. With 8 years of experience, her metrics are strong, though I've noted her current velocity is at 85."
     },
     {
       "role": "manager",
       "speaker": "Priya Patel",
-      "text": "Project needs: C++, Machine Learning, Python. Alignment 100%. Overlap: C++, Machine Learning, Python. Gaps: None"
+      "text": "For this project, which requires C++ and Machine Learning, Anjali is a 100% alignment. Her Machine Learning background is a key overlap and there are no skill gaps."
     },
     {
       "role": "hr",
       "speaker": "HR Representative",
-      "text": "HR perspective: Anjali Sharma shows strong background in M.S. in Computer Science; summary: Expert in building and deploying large-scale machine learning models. ..."
+      "text": "Her profile is impressive, especially with her Master's in AI. Strengths: C++, Machine Learning, Python, and TensorFlow proficiency are well-documented."
     },
     {
       "role": "manager",
       "speaker": "Priya Patel",
-      "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
-    },
-    {
-      "role": "manager",
-      "speaker": "Priya Patel",
-      "text": "Anjali, your performance on Project Phoenix has been stellar, evidenced by your outstanding Quality Score of 98. Given the project's needs are fully aligned with your skills, the next logical step is for you to take on a technical leadership role, perhaps by mentoring our junior engineers on advanced TensorFlow applications."
-    },
-    {
-      "role": "hr",
-      "speaker": "HR Representative",
-      "text": "Anjali is a top performer whose skills are a perfect match for this high-impact project. To support her continued development and engagement, I recommend we formally task her with mentoring two junior engineers. This provides valuable leadership exposure and strengthens the team's overall capability."
+      "text": "Perfect. Given her TensorFlow expertise, I propose we expand her scope to lead the initial model development for the new recommendation engine."
     }
   ],
   "pm1-emp113": [
@@ -1189,6 +1179,28 @@
       "role": "manager",
       "speaker": "Priya Patel",
       "text": "Considering task alignment leveraging B.A. in Graphic Design and strengths in Agile Methodology, Figma."
+    }
+  ],
+  "pm2-emp101": [
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Reviewing Anjali Sharma for project 'Project Chimera': 8 yrs experience; Velocity=85."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Project needs: Go, Leadership, System Design. Alignment 0%. Overlap: . Gaps: Go, Leadership, System Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Anjali Sharma shows strong background in M.S. in Computer Science; summary: Expert in building and deploying large-scale machine learning models. ..."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
     }
   ]
 }
