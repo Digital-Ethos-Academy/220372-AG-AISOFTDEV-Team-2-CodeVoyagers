@@ -511,6 +511,21 @@
       "role": "manager",
       "speaker": "John Smith",
       "text": "Considering task alignment leveraging M.S. in Cloud Computing and strengths in AWS, Azure."
+    },
+    {
+      "role": "teamlead",
+      "speaker": "Team Lead",
+      "text": "What skills does Fiona need to be a good match for this project?"
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "To address the team's question, Fiona's primary gap is Kubernetes. With her Quality Score at an excellent 98, our next step is to focus on a targeted upskilling plan for that specific technology to ensure full alignment with Project Stratus."
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "Fiona's high skill alignment makes this a perfect growth opportunity. I recommend we sponsor an advanced Kubernetes certification for her. Investing in her development will directly benefit the project and signals our commitment to her career path, boosting morale."
     }
   ],
   "pm5-emp106": [
@@ -671,22 +686,32 @@
     {
       "role": "manager",
       "speaker": "Priya Patel",
-      "text": "We're here to discuss Anjali Sharma's fit for Project Phoenix. With 8 years of experience, her metrics are strong, though I've noted her current velocity is at 85."
+      "text": "Reviewing Anjali Sharma for project 'Project Phoenix': 8 yrs experience; Velocity=85."
     },
     {
       "role": "manager",
       "speaker": "Priya Patel",
-      "text": "For this project, which requires C++ and Machine Learning, Anjali is a 100% alignment. Her Machine Learning background is a key overlap and there are no skill gaps."
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 100%. Overlap: C++, Machine Learning, Python. Gaps: None"
     },
     {
       "role": "hr",
       "speaker": "HR Representative",
-      "text": "Her profile is impressive, especially with her Master's in AI. Strengths: C++, Machine Learning, Python, and TensorFlow proficiency are well-documented."
+      "text": "HR perspective: Anjali Sharma shows strong background in M.S. in Computer Science; summary: Expert in building and deploying large-scale machine learning models. ..."
     },
     {
       "role": "manager",
       "speaker": "Priya Patel",
-      "text": "Perfect. Given her TensorFlow expertise, I propose we expand her scope to lead the initial model development for the new recommendation engine."
+      "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Anjali, your contribution to Project Phoenix has been outstanding, reflected in your exceptional Quality Score of 98. As your skills are perfectly aligned, a great next step would be for you to begin mentoring junior engineers on the team to help scale our ML capabilities."
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "Anjali, given your consistent high performance and expert status, we want to invest in your leadership trajectory. We recommend a mentorship role on a cross-functional initiative to give you exposure to broader product strategy, which will be a key step for your career growth here."
     }
   ],
   "pm1-emp113": [
@@ -1201,6 +1226,65 @@
       "role": "manager",
       "speaker": "David Chen",
       "text": "Considering task alignment leveraging M.S. in Computer Science and strengths in C++, Machine Learning."
+    }
+  ],
+  "pm1-emp114": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Alex Chen for project 'Project Phoenix': 1 yrs experience; Velocity=14."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 100%. Overlap: C++, Machine Learning, Python. Gaps: None"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Alex Chen shows strong background in Bachelor of Science in Computer Science; summary: Eager Junior Software Engineer with a passion for learning and a diver..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Science and strengths in C++, Data Structures."
+    },
+    {
+      "role": "teamlead",
+      "speaker": "Team Lead",
+      "text": "How many hobbies does Alex have?"
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "To address the comment, Alex has 13 listed hobbies. His velocity of 14 is strong for his level. As there are no skill gaps, the immediate next step is pairing him with a senior engineer to accelerate his contribution to the core recommendation engine."
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "With a 100% skill alignment, Alex is perfectly positioned for growth. I recommend assigning him a formal mentor to help translate his foundational knowledge into project-specific expertise, ensuring his long-term engagement and development."
+    }
+  ],
+  "pm4-emp114": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing Alex Chen for project 'Project Stratus': 1 yrs experience; Velocity=14."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Alex Chen shows strong background in Bachelor of Science in Computer Science; summary: Eager Junior Software Engineer with a passion for learning and a diver..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Science and strengths in C++, Data Structures."
     }
   ]
 }

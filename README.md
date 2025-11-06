@@ -1,147 +1,132 @@
-#  Capstone Project: AI-Driven Software Engineering
+# Performance Evaluation Dashboard
 
-Welcome to the final project for the AI-Driven Software Engineering Program! This two-day capstone is your opportunity to synthesize all the skills you've acquired over the past eight days. You will apply AI-assisted techniques across the entire software development lifecycle to build a complete, functional application from the ground up.
+## Overview
+This project is a lightweight Performance Evaluation Dashboard that helps a Project Manager generate structured evaluation discussions for employees. It combines a FastAPI backend, a simple HTML frontend (Jinja2 templates), a SQLite database for persistence, and optional Large Language Model (LLM) providers (OpenAI, Anthropic, Google, Hugging Face) to assist with generating conversation prompts and discussion summaries.
 
----
+## Core Goals
+* Central place to manage employees and project managers
+* View employee profiles and related discussion history
+* Generate AI-assisted discussion points to aid performance reviews
+* Customize basic dashboard layout and content
+* Keep implementation small, transparent, and easy to extend
 
-## 🎯 Project Goal
+## Key Features
+* Employee & Manager CRUD via REST endpoints
+* Conversation engine that stores generated dialogue in JSON history
+* Pluggable LLM provider abstraction (`utils/providers/*`) for future expansion
+* Simple rate limiting & error handling helpers
+* PlantUML architecture & use case artifacts for clarity
 
-The primary goal of this capstone is to **build and present a working prototype of a software application, demonstrating the integration of Generative AI at every phase of the SDLC**. You will act as a full-stack developer, using AI as your co-pilot for planning, architecture, coding, testing, and documentation.
+## High-Level Use Cases
+```
+Actors:
+  [Project Manager]  [Employee]  [AI System]
 
----
+ System Boundary: Performance Dashboard
+  +---------------------------------------------------------------+
+  | (Manage Dashboard)   (Add Employee)  (View Employee Profile) |
+  | (Generate Discussion)              (Customize Layout)        |
+  +---------------------------------------------------------------+
 
-##  deliverables Checklist
+Relationships:
+  Project Manager -> Manage Dashboard
+  Project Manager -> Add Employee
+  Project Manager -> View Employee Profile
+  Project Manager -> Customize Layout
+  Project Manager -> Generate Discussion <- AI System
+  Employee -> View Employee Profile
+```
 
-Your final submission must include the following components. You will use AI assistance to generate and refine each of these artifacts.
+## Component Architecture
+```
+		  +-------------------------+
+		  |        User (PM/Emp)    |
+		  +------------+------------+
+				 |
+				 v
+			+---------------+
+			|  Dashboard UI |  (HTML/Jinja)
+			+-------+-------+
+				 | contains
+	 +--------------------+--------------------+
+	 |                                         |
+  +-----------+                          +----------------+
+  | Modal     |                          | Profile Display|
+  | Forms     |                          +----------------+
+  +-----------+
+				 |
+				 v  HTTP (REST /api/*)
+			  +---------------+
+			  |  FastAPI App  |
+			  +-------+-------+
+				   | uses
+		 +----------------+------------------+
+		 |                                   |
+	 +-------------+                     +--------------------+
+	 | AI Generator|                     | Conversation Engine|
+	 +------+------+                     +------+-------------+
+		 | API calls                        | API calls
+		 v                                   v
+	 +------------------+               +------------------+
+	 |   LLM Service    | (OpenAI/Anthropic/etc.)
+	 +------------------+
+		 ^                                   
+		 |                                   
+  +----------------------+          +--------------------------+
+  |   SQLite Database    |          |      JSON Storage        |
+  | (Employees/Managers) |          | (Conversation History)   |
+  +----------------------+          +--------------------------+
+		  ^                              ^
+		  | Reads/Writes                 | Reads/Writes
+		  +--------------+---------------+
+				   |
+			   FastAPI App (Data Layer interactions)
+```
 
-* **Documentation:**
-    * `Product Requirements Document (PRD)` generated from a high-level idea.
-    * `Architecture Document` including auto-generated UML diagrams (e.g., Component or Sequence diagrams).
-    * `Architecture Decision Records (ADR)` including auto-generated technical decisions with their justifications.
-* **Backend Application:**
-    * A complete REST API project using **Python and FastAPI**.
-    * An AI-generated database schema (e.g., `schema.sql`).
-    * A suite of **unit tests** generated with AI assistance.
-    * A report or list of identified **security vulnerabilities**.
-* **Frontend Application:**
-    * A **React** frontend that interacts with your backend API.
-    * At least one key component generated from a **design screenshot or mockup**.
-* **Final Presentation:**
-    * A **10-15 minute presentation** summarizing your project.
-    * A **live demo** of your fully working front-end and back-end application.
-* **AI Code:**
-    * A **ipynb or py file(s)** containing the code you used to generate your artifacts.
+## Technology Stack
+* Python 3 + FastAPI (`src/main.py`)
+* SQLite (schema & seed in `artifacts/schema.sql`, `artifacts/seed_data.sql`)
+* HTML/Jinja2 templates (`src/templates/`)
+* LLM provider abstraction layer (`utils/providers/`)
+* Supporting utilities: logging, rate limiting, error handling
 
----
+## Directory Highlights
+* `src/` – Application entrypoint and templates
+* `utils/` – Helper modules, provider integrations, artifacts handling
+* `artifacts/` – Architecture docs, UML diagrams, schema, PRD, ADRs
+* `requirements.txt` – Python dependencies
 
+## Quick Start (Local Development)
+Prerequisite: Python 3.11+ recommended.
 
----
+1. (Optional) Create and activate a virtual environment.
+2. Install dependencies.
+3. Run the development server.
 
-## 💡 Suggested Project Ideas
+```
+python -m venv .venv
+./.venv/Scripts/Activate.ps1
+pip install -r requirements.txt
+uvicorn src.main:app --reload --host 127.0.0.1 --port 8000
+```
 
-You are encouraged to submit a project proposal for a tool of your choice. To get you started, here are some sample projects that align well with the course content:
+Then open: http://127.0.0.1:8000
 
-* **AI-Powered Requirement Analyzer:** An application that takes a vague problem statement and generates a detailed PRD, user stories, and acceptance criteria.
-* **Automated Test Case Assistant:** A tool that reads a Python function or API endpoint and generates a comprehensive suite of `pytest` unit tests, including edge cases.
-* **CI/CD Pipeline Summarizer:** An application that ingests CI/CD logs and generates a human-readable summary of build successes, failures, and test results.
-* **RAG-Powered Documentation Chatbot:** A chatbot with a RAG backend that can answer questions about a specific codebase or technical document.
+## API Sketch
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| /api/employees | GET/POST | List or create employees |
+| /api/project-managers | GET/POST | Manage project managers |
+| /api/conversation | POST | Generate or extend discussion |
 
----
+## Extending
+* Add new LLM providers by implementing `BaseProvider` in `utils/providers/base.py`.
+* Modify data models and migrations via `schema.sql`.
+* Introduce auth (e.g., JWT) by adding middleware in `src/main.py`.
 
-## 🗓️ Timeline & Schedule
+## Vision
+Start simple: accurate data capture + aided discussions. Grow toward richer performance metrics, sentiment analysis, and scheduled review workflows while keeping transparency and human oversight central.
 
-### **Day 9: Build Day (Focus: Implementation)**
+## License
+Add a LICENSE file (not yet included) if needed for distribution.
 
-This day is dedicated entirely to hands-on development. Follow the workflow below to build your application.
-
-* **Morning (9:00 AM - 12:15 PM):** Project Planning, Architecture, and Backend Development.
-* **Afternoon (1:15 PM - 4:30 PM):** Quality Assurance, Frontend Development, and Integration.
-
-### **Day 10: Demo Day (Focus: Presentation & Showcase)**
-
-* **Morning (9:00 AM - 12:00 PM): Final Preparations**
-    * Finalize any remaining code and integration tasks.
-    * Thoroughly test your application for the live demo.
-    * Prepare your 10-15 minute presentation slides.
-* **Afternoon (1:00 PM - 4:30 PM): Capstone Project Demos**
-    * Each student/team will present their project to the class.
-    * Celebrate your hard work and see what your peers have built!
-
----
-
-## 🚀 Step-by-Step Workflow
-
-This is your roadmap for Day 9. Use this workflow to ensure you touch on all the key skills learned during the course.
-
-### **Phase 1: AI as Product Manager (Planning & Requirements)**
-
-* **Goal:** Create a comprehensive PRD.
-* **Action:**
-    1.  Start with a high-level idea for your application.
-    2.  Use an LLM to brainstorm features, user personas, and user stories with acceptance criteria (as you did on **Day 1**).
-    3.  Provide the brainstormed content and a template to the LLM to generate a formal `prd.md` file.
-    * **Artifact:** `prd.md`
-
-### **Phase 2: AI as Architect (Design & Architecture)**
-
-* **Goal:** Define your application's architecture and data structure.
-* **Action:**
-    1.  Feed your `prd.md` to an LLM.
-    2.  Prompt it to generate a high-level system architecture. Ask for **diagrams-as-code (PlantUML)** for your architecture document (as you did on **Day 2**).
-    3.  Prompt it to generate the `CREATE TABLE` statements for your database schema.
-    * **Artifacts:** `architecture.md` (with diagrams), `schema.sql`
-
-### **Phase 3: AI as Backend Developer (Coding)**
-
-* **Goal:** Build a functional FastAPI backend.
-* **Action:**
-    1.  Provide your `schema.sql` to an LLM.
-    2.  Prompt it to generate Pydantic and SQLAlchemy models.
-    3.  Prompt it to generate the FastAPI application boilerplate with full CRUD endpoints for your models (as you did on **Day 3**).
-    4.  Integrate the generated code and connect it to a live SQLite database.
-    * **Artifacts:** `main.py`, `onboarding.db` (or similar)
-
-### **Phase 4: AI as QA Engineer (Testing & Security)**
-
-* **Goal:** Ensure your backend is robust and secure.
-* **Action:**
-    1.  Provide your `main.py` source code to an LLM.
-    2.  Prompt it to generate a suite of `pytest` unit tests for your API, including "happy path" and edge cases (as you did on **Day 4**).
-    3.  Prompt it to act as a security expert and identify potential vulnerabilities in your code (e.g., SQL injection, lack of input validation).
-    * **Artifacts:** `test_main.py`, `security_review.md`
-
-### **Phase 5: AI as Frontend Developer (UI/UX)**
-
-* **Goal:** Create a user interface for your application.
-* **Action:**
-    1.  Create a simple wireframe or find a screenshot of a UI you like.
-    2.  Use a **vision-capable LLM** to generate a React component with Tailwind CSS from that image (as you did on **Day 7/8**).
-    3.  Prompt a text-based LLM to create additional components as needed.
-    * **Artifact:** `src/App.js` and other React components.
-
----
-
-## 🎤 Presentation Guidelines
-
-Your final presentation should be a concise and engaging overview of your project. Please include the following:
-
-1.  **Project Title & Goal:** What did you build and why?
-2.  **AI-Assisted Workflow:** Showcase how you used GenAI in **at least three distinct phases** of the SDLC.
-    * Show a "before" (the prompt) and "after" (the generated artifact).
-3.  **Technical Architecture:** Briefly explain your system design.
-4.  **Live Demo:** A walkthrough of your working application. This is the most important part!
-5.  **Challenges & Learnings:** What was challenging? What were your key takeaways from the project?
-
----
-
-## 📝 Submission & Evaluation
-
-* **Submission:** Please push your complete project, including all artifacts and source code, to a GitHub repository and submit the link.
-* **Evaluation Criteria:** Projects will be evaluated based on:
-    1.  **Completeness:** Were all required deliverables submitted?
-    2.  **Functionality:** Does the application work as demonstrated?
-    3.  **Innovative Use of AI:** How effectively and creatively did you leverage GenAI across the SDLC?
-    4.  **Documentation Quality:** Is the PRD and architecture well-defined?
-    5.  **Presentation Clarity:** Was the demo and explanation clear and professional?
-
-Good luck, and have fun building! The instructional team is here to support you.
