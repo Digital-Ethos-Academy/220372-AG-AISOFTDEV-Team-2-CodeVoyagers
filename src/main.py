@@ -23,7 +23,7 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from utils import setup_llm_client, get_completion, save_artifact, load_environment, RECOMMENDED_MODELS
-from utils.database import init_db, fetch_project_managers, fetch_employees, fetch_project_manager, fetch_employee, insert_project_manager, insert_employee
+from utils.database import init_db, fetch_project_managers, fetch_employees, fetch_project_manager, fetch_employee, insert_project_manager, insert_employee, delete_project_manager, delete_employee
 import threading
 
 CONVERSATION_FILE = os.path.join(project_root, 'artifacts', 'conversations.json')
@@ -170,6 +170,18 @@ async def create_project_manager(request: Request):
     except Exception as e:
         return JSONResponse({'error': str(e)}, status_code=400)
 
+@app.delete('/api/project-managers/{mid}')
+def delete_project_manager_endpoint(mid: int):
+    """Delete a project manager by ID."""
+    try:
+        success = delete_project_manager(mid)
+        if success:
+            return JSONResponse({'message': f'Project manager {mid} deleted successfully'})
+        else:
+            return JSONResponse({'error': 'Project manager not found'}, status_code=404)
+    except Exception as e:
+        return JSONResponse({'error': str(e)}, status_code=500)
+
 @app.get('/api/employees')
 def get_employees():
     try:
@@ -226,6 +238,18 @@ async def create_employee(request: Request):
         return JSONResponse({'employee': emp})
     except Exception as e:
         return JSONResponse({'error': str(e)}, status_code=400)
+
+@app.delete('/api/employees/{eid}')
+def delete_employee_endpoint(eid: int):
+    """Delete an employee by ID."""
+    try:
+        success = delete_employee(eid)
+        if success:
+            return JSONResponse({'message': f'Employee {eid} deleted successfully'})
+        else:
+            return JSONResponse({'error': 'Employee not found'}, status_code=404)
+    except Exception as e:
+        return JSONResponse({'error': str(e)}, status_code=500)
 
 def _llm_generate_json(prompt: str, schema_description: str) -> Optional[dict]:
     """Helper to call LLM to get structured JSON-like data. Falls back to None on failure."""

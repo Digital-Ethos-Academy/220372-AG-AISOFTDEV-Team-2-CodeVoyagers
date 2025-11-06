@@ -171,6 +171,23 @@
     </form>
   </div>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmModal" class="modal confirm-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Confirm Deletion</h3>
+      <button class="close" onclick="closeModal('deleteConfirmModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p id="deleteConfirmMessage">Are you sure you want to delete this item?</p>
+    </div>
+    <div class="form-actions">
+      <button id="confirmDeleteBtn" class="btn-primary" style="background: #dc3545;">Delete</button>
+      <button type="button" class="btn-secondary" onclick="closeModal('deleteConfirmModal')">Cancel</button>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -231,8 +248,17 @@
         managerData[pm.id] = pm;
         const el = document.createElement('div');
         el.className = 'user-item';
-        el.onclick = () => selectManager(pm.id, el);
-        el.innerHTML = `<h4>${pm.name}</h4><p>${pm.role}</p><span class="company">${pm.department}</span>`;
+        el.onclick = (e) => {
+          if (!e.target.classList.contains('delete-btn')) {
+            selectManager(pm.id, el);
+          }
+        };
+        el.innerHTML = `
+          <h4>${pm.name}</h4>
+          <p>${pm.role}</p>
+          <span class="company">${pm.department}</span>
+          <button class="delete-btn" onclick="confirmDelete('manager', ${pm.id}, '${pm.name}')" title="Delete Manager">&times;</button>
+        `;
         list.appendChild(el);
       });
     } catch (e) {
@@ -251,8 +277,18 @@
         employeeData[emp.id] = emp;
         const el = document.createElement('div');
         el.className = 'user-item';
-        el.onclick = () => selectEmployee(emp.id, el);
-        el.innerHTML = `<h4>${emp.name}</h4><p>${emp.title}</p><span class="experience">${emp.experience_years} yrs</span><div class="skills">${(emp.skills||[]).slice(0,3).join(', ')}</div>`;
+        el.onclick = (e) => {
+          if (!e.target.classList.contains('delete-btn')) {
+            selectEmployee(emp.id, el);
+          }
+        };
+        el.innerHTML = `
+          <h4>${emp.name}</h4>
+          <p>${emp.title}</p>
+          <span class="experience">${emp.experience_years} yrs</span>
+          <div class="skills">${(emp.skills||[]).slice(0,3).join(', ')}</div>
+          <button class="delete-btn" onclick="confirmDelete('employee', ${emp.id}, '${emp.name}')" title="Delete Employee">&times;</button>
+        `;
         list.appendChild(el);
       });
     } catch (e) {
@@ -602,8 +638,17 @@
     const list = document.getElementById('managerList');
     const el = document.createElement('div');
     el.className='user-item';
-    el.onclick = () => selectManager(pm.id, el);
-    el.innerHTML = `<h4>${pm.name}</h4><p>${pm.role}</p><span class="company">${pm.department}</span>`;
+    el.onclick = (e) => {
+      if (!e.target.classList.contains('delete-btn')) {
+        selectManager(pm.id, el);
+      }
+    };
+    el.innerHTML = `
+      <h4>${pm.name}</h4>
+      <p>${pm.role}</p>
+      <span class="company">${pm.department}</span>
+      <button class="delete-btn" onclick="confirmDelete('manager', ${pm.id}, '${pm.name}')" title="Delete Manager">&times;</button>
+    `;
     list.prepend(el);
   }
 
@@ -611,8 +656,18 @@
     const list = document.getElementById('employeeList');
     const el = document.createElement('div');
     el.className='user-item';
-    el.onclick = () => selectEmployee(emp.id, el);
-    el.innerHTML = `<h4>${emp.name}</h4><p>${emp.title}</p><span class="experience">${emp.experience_years} yrs</span><div class="skills">${(emp.skills||[]).slice(0,3).join(', ')}</div>`;
+    el.onclick = (e) => {
+      if (!e.target.classList.contains('delete-btn')) {
+        selectEmployee(emp.id, el);
+      }
+    };
+    el.innerHTML = `
+      <h4>${emp.name}</h4>
+      <p>${emp.title}</p>
+      <span class="experience">${emp.experience_years} yrs</span>
+      <div class="skills">${(emp.skills||[]).slice(0,3).join(', ')}</div>
+      <button class="delete-btn" onclick="confirmDelete('employee', ${emp.id}, '${emp.name}')" title="Delete Employee">&times;</button>
+    `;
     list.prepend(el);
   }
 
@@ -622,6 +677,78 @@
 
   // Allow clicking outside to close
   window.onclick = function(ev){ if (ev.target.classList.contains('modal')) ev.target.classList.remove('show'); };
+
+  // Delete functionality
+  let deleteType = null;
+  let deleteId = null;
+  
+  function confirmDelete(type, id, name) {
+    deleteType = type;
+    deleteId = id;
+    const message = `Are you sure you want to delete ${type === 'manager' ? 'project manager' : 'employee'} "${name}"?`;
+    document.getElementById('deleteConfirmMessage').textContent = message;
+    document.getElementById('deleteConfirmModal').classList.add('show');
+    
+    // Set up the confirm button
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    confirmBtn.onclick = executeDelete;
+  }
+
+  async function executeDelete() {
+    if (!deleteType || !deleteId) return;
+    
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    setLoading(confirmBtn, true, 'Deleting...');
+    
+    try {
+      const endpoint = deleteType === 'manager' ? 
+        `/api/project-managers/${deleteId}` : 
+        `/api/employees/${deleteId}`;
+      
+      const response = await fetch(endpoint, { method: 'DELETE' });
+      const data = await response.json();
+      
+      if (response.ok) {
+        showStatus(`${deleteType === 'manager' ? 'Project manager' : 'Employee'} deleted successfully`);
+        
+        // Remove from local data
+        if (deleteType === 'manager') {
+          delete managerData[deleteId];
+          if (selectedManager === deleteId) {
+            selectedManager = null;
+            document.getElementById('conversationOutput').innerHTML = '<p>Select both a project manager and an employee to explore growth and role potential.</p>';
+          }
+        } else {
+          delete employeeData[deleteId];
+          if (selectedEmployee === deleteId) {
+            selectedEmployee = null;
+            document.getElementById('profileCard').innerHTML = '<p>Select an employee to view their detailed profile and metrics.</p>';
+            document.getElementById('conversationOutput').innerHTML = '<p>Select both a project manager and an employee to explore growth and role potential.</p>';
+          }
+        }
+        
+        // Reload the appropriate list
+        if (deleteType === 'manager') {
+          await loadManagers();
+        } else {
+          await loadEmployees();
+        }
+        
+        closeModal('deleteConfirmModal');
+      } else {
+        throw new Error(data.error || 'Delete failed');
+      }
+    } catch (error) {
+      showStatus(`Error: ${error.message}`);
+      setTimeout(clearStatus, 3000);
+    } finally {
+      setLoading(confirmBtn, false);
+    }
+    
+    // Reset delete state
+    deleteType = null;
+    deleteId = null;
+  }
 
   // Style for team lead and HR messages
   const styleTag = document.createElement('style');

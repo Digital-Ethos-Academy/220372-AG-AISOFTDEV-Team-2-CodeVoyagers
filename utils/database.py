@@ -242,3 +242,62 @@ def insert_employee(data: Dict[str, Any]) -> Dict[str, Any]:
     conn.commit()
     conn.close()
     return fetch_employee(eid)
+
+def delete_project_manager(mid: int) -> bool:
+    """Delete a project manager and all related data (required skills).
+    
+    Args:
+        mid: Project manager ID to delete
+        
+    Returns:
+        bool: True if deletion was successful, False if manager not found
+    """
+    conn = get_db()
+    cur = conn.cursor()
+    
+    # Check if project manager exists
+    cur.execute("SELECT id FROM project_managers WHERE id=?", (mid,))
+    if not cur.fetchone():
+        conn.close()
+        return False
+    
+    # Delete related required skills first
+    cur.execute("DELETE FROM manager_required_skills WHERE manager_id=?", (mid,))
+    
+    # Delete project manager
+    cur.execute("DELETE FROM project_managers WHERE id=?", (mid,))
+    
+    conn.commit()
+    conn.close()
+    return True
+
+def delete_employee(eid: int) -> bool:
+    """Delete an employee and all related data (skills, metrics).
+    
+    Args:
+        eid: Employee ID to delete
+        
+    Returns:
+        bool: True if deletion was successful, False if employee not found
+    """
+    conn = get_db()
+    cur = conn.cursor()
+    
+    # Check if employee exists
+    cur.execute("SELECT id FROM employees WHERE id=?", (eid,))
+    if not cur.fetchone():
+        conn.close()
+        return False
+    
+    # Delete related employee skills
+    cur.execute("DELETE FROM employee_skills WHERE employee_id=?", (eid,))
+    
+    # Delete related employee metrics
+    cur.execute("DELETE FROM employee_metrics WHERE employee_id=?", (eid,))
+    
+    # Delete employee
+    cur.execute("DELETE FROM employees WHERE id=?", (eid,))
+    
+    conn.commit()
+    conn.close()
+    return True
