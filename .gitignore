@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.db
+# *.db
 *.sqlite3
 
 # Virtual Environment
@@ -20,7 +20,7 @@ venv.bak/
 !.env.example
 
 # Artifacts
-artifacts/
+# artifacts/
 
 # IDE and Editor Folders
 .vscode/

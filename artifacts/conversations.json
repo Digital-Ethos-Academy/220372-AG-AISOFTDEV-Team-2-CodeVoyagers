@@ -1,0 +1,208 @@
+{
+  "pm2-emp102": [
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Reviewing Ben Carter for project 'Project Chimera': 4 yrs experience; Velocity=70."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Project needs: Go, Leadership, System Design. Alignment 0%. Overlap: . Gaps: Go, Leadership, System Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ben Carter shows strong background in B.S. in Software Engineering; summary: Proficient C++ developer with a background in performance optimization..."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Considering task alignment leveraging B.S. in Software Engineering and strengths in C++, Git."
+    }
+  ],
+  "pm1-emp102": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Ben Carter for project 'Project Phoenix': 4 yrs experience; Velocity=70."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 66%. Overlap: C++, Python. Gaps: Machine Learning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Ben Carter shows strong background in B.S. in Software Engineering; summary: Proficient C++ developer with a background in performance optimization..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging B.S. in Software Engineering and strengths in C++, Git."
+    }
+  ],
+  "pm1-emp111": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing Alex Chen for project 'Project Phoenix': 1 yrs experience; Velocity=8."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 100%. Overlap: C++, Machine Learning, Python. Gaps: None"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: Alex Chen shows strong background in Bachelor of Science in Computer Science; summary: A dedicated Junior Software Engineer with a foundational year of exper..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Science and strengths in Algorithms, C++."
+    },
+    {
+      "role": "teamlead",
+      "speaker": "Team Lead",
+      "text": "How many hobbies does Alex have?"
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Alex Chen alignment 100%. Overlap: C++, Machine Learning, Python; gaps: None. Comment: 'How many hobbies does Alex have?...'"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "Hobby context: Alex has 13 hobbies; maintaining balance while addressing no immediate gaps."
+    }
+  ],
+  "pm2-emp112": [
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Reviewing David Lee for project 'Project Chimera': 1 yrs experience; Velocity=10."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Project needs: Go, Leadership, System Design. Alignment 0%. Overlap: . Gaps: Go, Leadership, System Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: David Lee shows strong background in Bachelor of Science in Computer Engineering; summary: A motivated junior engineer with foundational experience in Python, C+..."
+    },
+    {
+      "role": "manager",
+      "speaker": "David Chen",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Engineering and strengths in Agile Methodologies, C++."
+    }
+  ],
+  "pm3-emp112": [
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Reviewing David Lee for project 'Org Readiness Initiative': 1 yrs experience; Velocity=10."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Project needs: Data Analysis, Workforce Planning. Alignment 0%. Overlap: . Gaps: Data Analysis, Workforce Planning"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: David Lee shows strong background in Bachelor of Science in Computer Engineering; summary: A motivated junior engineer with foundational experience in Python, C+..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Maria Garcia",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Engineering and strengths in Agile Methodologies, C++."
+    }
+  ],
+  "pm4-emp112": [
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Reviewing David Lee for project 'Project Stratus': 1 yrs experience; Velocity=10."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Project needs: AWS, Kubernetes, Terraform. Alignment 0%. Overlap: . Gaps: AWS, Kubernetes, Terraform"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: David Lee shows strong background in Bachelor of Science in Computer Engineering; summary: A motivated junior engineer with foundational experience in Python, C+..."
+    },
+    {
+      "role": "manager",
+      "speaker": "John Smith",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Engineering and strengths in Agile Methodologies, C++."
+    }
+  ],
+  "pm5-emp112": [
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Reviewing David Lee for project 'Project Horizon': 1 yrs experience; Velocity=10."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Project needs: Agile Methodology, React, UX Design. Alignment 0%. Overlap: . Gaps: Agile Methodology, React, UX Design"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: David Lee shows strong background in Bachelor of Science in Computer Engineering; summary: A motivated junior engineer with foundational experience in Python, C+..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Emily White",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Engineering and strengths in Agile Methodologies, C++."
+    }
+  ],
+  "pm1-emp112": [
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Reviewing David Lee for project 'Project Phoenix': 1 yrs experience; Velocity=10."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Project needs: C++, Machine Learning, Python. Alignment 100%. Overlap: C++, Machine Learning, Python. Gaps: None"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "HR perspective: David Lee shows strong background in Bachelor of Science in Computer Engineering; summary: A motivated junior engineer with foundational experience in Python, C+..."
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "Considering task alignment leveraging Bachelor of Science in Computer Engineering and strengths in Agile Methodologies, C++."
+    },
+    {
+      "role": "teamlead",
+      "speaker": "Team Lead",
+      "text": "How many hobbies does David have?"
+    },
+    {
+      "role": "manager",
+      "speaker": "Priya Patel",
+      "text": "David Lee alignment 100%. Overlap: C++, Machine Learning, Python; gaps: None. Comment: 'How many hobbies does David have?...'"
+    },
+    {
+      "role": "hr",
+      "speaker": "HR Representative",
+      "text": "Hobby context: David has 13 hobbies; maintaining balance while addressing no immediate gaps."
+    }
+  ]
+}

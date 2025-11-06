@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+
+title Performance Evaluation Dashboard - Component Diagram
+
+actor User
+
+package "Web Layer (Browser)" {
+  [Dashboard UI]
+  [Modal Forms]
+  [Profile Display]
+}
+
+package "Backend Layer (FastAPI)" {
+  [FastAPI App]
+  [AI Generator]
+  [Conversation Engine]
+}
+
+package "Data Layer" {
+  database "SQLite Database" as DB
+  [JSON Storage]
+}
+
+package "External Services" {
+  [LLM Service]
+}
+
+' --- Relationships ---
+
+' User Interaction
+User --> [Dashboard UI] : Interacts with
+
+' Web Layer Composition
+[Dashboard UI] -- [Modal Forms] : contains
+[Dashboard UI] -- [Profile Display] : contains
+
+' Web Layer to Backend Layer
+[Dashboard UI] --> [FastAPI App] : "HTTP API Calls\n(/api/employees, /api/project-managers, /api/conversation)"
+
+' Backend Internal Logic
+[FastAPI App] --> [AI Generator] : Uses for data generation
+[FastAPI App] --> [Conversation Engine] : Manages evaluation discussions
+
+' Backend to Data Layer
+[FastAPI App] --> DB : Reads/Writes (Employees & Managers)
+[Conversation Engine] --> [JSON Storage] : Reads/Writes (Conversation History)
+
+' Backend to External Services
+[AI Generator] ..> [LLM Service] : API Calls (Google/OpenAI/etc.)
+[Conversation Engine] ..> [LLM Service] : API Calls for chat responses
+
+@enduml

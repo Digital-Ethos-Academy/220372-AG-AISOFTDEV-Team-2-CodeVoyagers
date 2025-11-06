@@ -1,0 +1,50 @@
+@startuml
+' /////////////// PlantUML Use Case Diagram ///////////////
+' Theme and Style for better readability
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #LightYellow
+    BorderColor #DarkSlateGray
+    ArrowColor #DarkSlateGray
+}
+skinparam rectangle {
+    BorderColor #DarkSlateGray
+    BackgroundColor #AliceBlue
+}
+skinparam actor {
+    BorderColor #DarkSlateGray
+}
+
+' //////////////////////// ACTORS ////////////////////////
+' Define actors with specified colors
+actor "Project Manager" as PM #Blue
+actor "Employee" as Emp #Green
+actor "AI System" as AI #Red
+
+' //////////////////////// SYSTEM ////////////////////////
+' Define the system boundary for the dashboard
+rectangle "Performance Dashboard" {
+  ' Define core use cases
+  usecase "(Manage Dashboard)" as UC1
+  usecase "(Add Employee)" as UC2
+  usecase "(View Employee Profile)" as UC3
+  usecase "(Generate Discussion)" as UC4
+  usecase "(Customize Layout)" as UC5
+}
+
+' //////////////////// RELATIONSHIPS ////////////////////
+' Define relationships between actors and use cases
+' Project Manager is the main user of the dashboard
+PM -- UC1
+PM -- UC2
+PM -- UC3
+PM -- UC5
+
+' Both PM and AI are involved in generating discussion points
+PM -- UC4
+AI -- UC4
+
+' Employee can view their own profile
+Emp -- UC3
+
+@enduml

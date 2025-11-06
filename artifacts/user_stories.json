@@ -1,0 +1,275 @@
+[
+  {
+    "id": 1,
+    "role": "Project Manager",
+    "persona": "System Administrator",
+    "user_story": "As a System Administrator, I want to add new Project Manager profiles via a modal form so that I can securely provision access for new managers to the platform.",
+    "acceptance_criteria": [
+      "When I click the 'Add Manager' button, a modal form appears.",
+      "The form must contain fields for Manager Name, Email, and Department.",
+      "Upon successful submission, the new manager's profile appears in the manager list.",
+      "An error message is displayed if the email format is invalid or already exists."
+    ],
+    "Skills": [
+      "Agile & Scrum Methodologies",
+      "Stakeholder Management",
+      "Roadmap Planning",
+      "Software Development Lifecycle (SDLC)",
+      "Resource Allocation",
+      "Budget Management"
+    ]
+  },
+  {
+    "id": 2,
+    "role": "Project Manager",
+    "persona": "Project Manager",
+    "user_story": "As a Project Manager, I want to add a new employee profile using a modal form so that I can quickly populate the dashboard with my team members' data.",
+    "acceptance_criteria": [
+      "Given I am on the main dashboard, when I click the 'Add Employee' button, a modal form is displayed.",
+      "The form includes fields for Name, Title, Skills, and initial performance metrics (e.g., Quality Score, Velocity Rating).",
+      "After submitting the form, the new employee appears in the employee list column.",
+      "The system validates that required fields are not empty before submission."
+    ],
+    "Skills": [
+      "Microservices Architecture",
+      "Cloud-Native Technologies",
+      "C++/Python",
+      "Machine Learning",
+      "Data Visualization",
+      "CI/CD Pipelines",
+      "Test Automation"
+    ]
+  },
+  {
+    "id": 3,
+    "role": "Project Manager",
+    "persona": "Project Manager",
+    "user_story": "As a Project Manager, I want to view a comprehensive employee profile in a dedicated panel so that I can assess their skills, experience, and performance history in one place.",
+    "acceptance_criteria": [
+      "When I click on an employee's name in the list, their full profile loads in the 'Profile View' column.",
+      "The profile view must display sections for Skills, Experience, Education, and Quantified Performance Metrics.",
+      "The skills section lists each skill with a corresponding proficiency level (e.g., Proficient, Expert).",
+      "The performance metrics section displays data for 'Projects Delivered', 'Quality Scores', and 'Velocity Ratings'."
+    ],
+    "Skills": [
+      "User Experience (UX) Design",
+      "Product Discovery",
+      "Agile & Scrum Methodologies",
+      "Stakeholder Management",
+      "Roadmap Planning",
+      "Software Development Lifecycle (SDLC)",
+      "Resource Allocation"
+    ]
+  },
+  {
+    "id": 4,
+    "role": "Project Manager",
+    "persona": "Project Manager",
+    "user_story": "As a Project Manager, I want to filter the employee list by specific skills and performance scores so that I can efficiently create a shortlist of qualified candidates for a new project.",
+    "acceptance_criteria": [
+      "The employee list panel contains filter controls for skills and performance metrics.",
+      "When I select a skill (e.g., 'Python'), the list updates in real-time to show only employees with that skill.",
+      "When I set a range for 'Quality Score' (e.g., >95%), the list updates to show only employees meeting that criterion.",
+      "I can apply multiple filters simultaneously to narrow down the results."
+    ],
+    "Skills": [
+      "ROS 2",
+      "C++/Python",
+      "SLAM & Navigation",
+      "Machine Learning",
+      "Control Systems Design",
+      "Embedded Systems",
+      "SolidWorks"
+    ]
+  },
+  {
+    "id": 5,
+    "role": "Project Manager",
+    "persona": "Hiring Manager",
+    "user_story": "As a Hiring Manager, I want to hover over a performance metric to see a detailed tooltip so that I can understand the context and data source behind the number.",
+    "acceptance_criteria": [
+      "Given an employee profile is displayed, when I hover my cursor over the 'Velocity Rating' metric, a tooltip appears.",
+      "The tooltip displays the definition of the metric and the date range it covers.",
+      "The tooltip for 'Projects Delivered' shows a list of the last 3 project names.",
+      "The tooltip disappears when the cursor is moved away from the metric."
+    ],
+    "Skills": [
+      "Microservices Architecture",
+      "Cloud-Native Technologies",
+      "CI/CD Pipelines",
+      "Test Automation",
+      "Software Development Lifecycle (SDLC)",
+      "Resource Allocation",
+      "Agile & Scrum Methodologies"
+    ]
+  },
+  {
+    "id": 6,
+    "role": "Project Manager",
+    "persona": "Hiring Manager",
+    "user_story": "As a Hiring Manager, I want to select and view up to three employee profiles side-by-side so that I can directly compare their qualifications for an internal role.",
+    "acceptance_criteria": [
+      "I can select multiple employees from the list using checkboxes.",
+      "When I click the 'Compare' button, a new view opens showing the selected profiles in adjacent columns.",
+      "Each column in the comparison view contains a summarized version of the employee's profile, highlighting key skills and metrics.",
+      "The system prevents me from selecting more than three employees for comparison at one time."
+    ],
+    "Skills": [
+      "Stakeholder Management",
+      "Roadmap Planning",
+      "Budget Management",
+      "Product Discovery",
+      "User Experience (UX) Design",
+      "Data Visualization",
+      "Machine Learning"
+    ]
+  },
+  {
+    "id": 7,
+    "role": "Project Manager",
+    "persona": "Project Manager",
+    "user_story": "As a Project Manager, I want to resize and reorder the main dashboard columns so that I can create a personalized workspace that suits my evaluation workflow.",
+    "acceptance_criteria": [
+      "I can click and drag the border between columns (e.g., 'Employee List' and 'Profile View') to resize them.",
+      "I can click and drag a column header to a new position to reorder the layout.",
+      "The dashboard layout changes are automatically saved to my user preferences.",
+      "When I log in again, my customized column layout is restored."
+    ],
+    "Skills": [
+      "Agile & Scrum Methodologies",
+      "Software Development Lifecycle (SDLC)",
+      "Resource Allocation",
+      "CI/CD Pipelines",
+      "Test Automation",
+      "Microservices Architecture",
+      "Cloud-Native Technologies"
+    ]
+  },
+  {
+    "id": 8,
+    "role": "Project Manager",
+    "persona": "Hiring Manager",
+    "user_story": "As a Hiring Manager, I want to initiate an AI-generated conversation simulation about an employee so that I can prepare for a data-driven and objective performance review.",
+    "acceptance_criteria": [
+      "Given an employee profile is selected, a 'Start AI Conversation' button is visible.",
+      "When I click the button, the AI conversation panel populates with an initial, context-aware prompt based on the employee's data.",
+      "The AI's response analyzes the employee's strengths and potential growth areas based on their profile metrics.",
+      "The conversation is presented in a chat-like interface."
+    ],
+    "Skills": [
+      "C++/Python",
+      "Machine Learning",
+      "Control Systems Design",
+      "Embedded Systems",
+      "ROS 2",
+      "SLAM & Navigation",
+      "SolidWorks"
+    ]
+  },
+  {
+    "id": 9,
+    "role": "Project Manager",
+    "persona": "Hiring Manager",
+    "user_story": "As a Hiring Manager, I want to inject my own comments into the AI conversation log so that I can add crucial context or team lead feedback to the evaluation record.",
+    "acceptance_criteria": [
+      "Within the AI conversation panel, there is an 'Inject Comment' button.",
+      "When clicked, a text input field appears allowing me to type a manual entry.",
+      "My submitted comment appears in the conversation log, clearly distinguished from AI-generated text (e.g., with my name and a different background color).",
+      "The AI can reference my injected comment in subsequent responses if prompted."
+    ],
+    "Skills": [
+      "Stakeholder Management",
+      "Roadmap Planning",
+      "Budget Management",
+      "Resource Allocation",
+      "Product Discovery",
+      "Agile & Scrum Methodologies",
+      "Software Development Lifecycle (SDLC)"
+    ]
+  },
+  {
+    "id": 10,
+    "role": "Project Manager",
+    "persona": "Project Manager",
+    "user_story": "As a Project Manager, I want to continue the AI conversation with follow-up questions so that I can explore specific aspects of an employee's performance in greater detail.",
+    "acceptance_criteria": [
+      "The AI conversation interface includes a text input field for me to type my own questions.",
+      "After I submit a question, the AI provides a relevant response based on the conversation history and the employee's profile data.",
+      "The entire conversation history remains visible in the panel.",
+      "The AI can handle questions like 'Tell me more about their performance on Project X' or 'What are their biggest areas for improvement?'."
+    ],
+    "Skills": [
+      "Data Visualization",
+      "User Experience (UX) Design",
+      "Test Automation",
+      "CI/CD Pipelines",
+      "Microservices Architecture",
+      "Cloud-Native Technologies",
+      "C++/Python"
+    ]
+  },
+  {
+    "id": 11,
+    "role": "Project Manager",
+    "persona": "Talent Mobility Specialist",
+    "user_story": "As a Talent Mobility Specialist, I want to generate a realistic, synthetic employee profile with one click so that I can demo the platform's features without using real employee data.",
+    "acceptance_criteria": [
+      "There is a 'Generate Demo Profile' button available in the employee management section.",
+      "When clicked, a new, fully populated employee profile is created using realistic but fake data.",
+      "The generated profile includes a name, title, skills, and plausible performance metrics.",
+      "All synthetically generated profiles are clearly marked as 'Demo Data'."
+    ],
+    "Skills": [
+      "Machine Learning",
+      "Data Visualization",
+      "Agile & Scrum Methodologies",
+      "Software Development Lifecycle (SDLC)",
+      "Cloud-Native Technologies",
+      "Microservices Architecture",
+      "C++/Python"
+    ]
+  },
+  {
+    "id": 12,
+    "role": "Project Manager",
+    "persona": "Project Manager",
+    "user_story": "As a Project Manager, I want to create and manage named shortlists of employees so that I can organize candidates for different projects or roles.",
+    "acceptance_criteria": [
+      "On each employee's profile, there is an 'Add to Shortlist' button.",
+      "I can create a new shortlist or add the employee to an existing one.",
+      "A dedicated 'Shortlists' panel shows all my created lists and the candidates within each.",
+      "I can remove an employee from a shortlist at any time."
+    ],
+    "Skills": [
+      "Resource Allocation",
+      "Budget Management",
+      "Stakeholder Management",
+      "Roadmap Planning",
+      "Product Discovery",
+      "Agile & Scrum Methodologies",
+      "User Experience (UX) Design"
+    ]
+  },
+  {
+    "id": 13,
+    "role": "Project Manager",
+    "persona": "Talent Mobility Specialist",
+    "user_story": "As a Talent Mobility Specialist, I want to view a team skills matrix dashboard so that I can identify skill gaps and strengths across the organization.",
+    "acceptance_criteria": [
+      "A 'Team Analytics' view is accessible from the main navigation.",
+      "The view displays a heat map or chart showing skills on one axis and employees/teams on the other.",
+      "The matrix is color-coded to represent proficiency levels (e.g., Novice, Proficient, Expert).",
+      "I can filter the matrix by department or team to analyze specific groups."
+    ],
+    "Skills": [
+      "ROS 2",
+      "SLAM & Navigation",
+      "Control Systems Design",
+      "Embedded Systems",
+      "SolidWorks",
+      "C++/Python",
+      "Machine Learning",
+      "Data Visualization"
+    ]
+  }
+]
