@@ -3,7 +3,7 @@ import sqlite3
 import json
 from typing import List, Dict, Any, Optional
 
-DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'artifacts', 'performance.db')
+DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'artifacts', 'main_database.db')
 
 PROJECT_MANAGER_SEED = [
     {
@@ -46,8 +46,24 @@ def get_db() -> sqlite3.Connection:
     return conn
 
 def init_db(force: bool = False) -> None:
+    """Initialize database. Since main_database.db already exists with normalized schema, 
+    this function mainly ensures compatibility and doesn't recreate existing data."""
     conn = get_db()
     cur = conn.cursor()
+    
+    # Check if we're working with the normalized schema (existing main_database.db)
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='manager_required_skills'")
+    has_normalized_schema = cur.fetchone() is not None
+    
+    if has_normalized_schema:
+        # Working with existing normalized schema - no need to force recreate
+        if force:
+            print("Warning: Force rebuild requested but using existing normalized schema. Skipping rebuild.")
+        # Database already exists with proper data, nothing to do
+        conn.close()
+        return
+    
+    # Legacy code for denormalized schema (if ever needed)
     if force:
         cur.execute("DROP TABLE IF EXISTS project_managers")
         cur.execute("DROP TABLE IF EXISTS employees")
@@ -81,6 +97,13 @@ def init_db(force: bool = False) -> None:
     conn.close()
 
 def serialize_project_manager(row: sqlite3.Row) -> Dict[str, Any]:
+    # Fetch required skills for this project manager
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT skill FROM manager_required_skills WHERE manager_id=?", (row['id'],))
+    required_skills = [skill[0] for skill in cur.fetchall()]
+    conn.close()
+    
     return {
         'id': row['id'],
         'name': row['name'],
@@ -91,10 +114,29 @@ def serialize_project_manager(row: sqlite3.Row) -> Dict[str, Any]:
         'focus_area': row['focus_area'],
         'active_project': row['active_project'] if 'active_project' in row.keys() else None,
         'project_summary': row['project_summary'] if 'project_summary' in row.keys() else None,
-        'required_skills': json.loads(row['required_skills']) if 'required_skills' in row.keys() and row['required_skills'] else []
+        'required_skills': required_skills
     }
 
 def serialize_employee(row: sqlite3.Row) -> Dict[str, Any]:
+    # Fetch skills for this employee
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT skill FROM employee_skills WHERE employee_id=?", (row['id'],))
+    skills = [skill[0] for skill in cur.fetchall()]
+    
+    # Fetch metrics for this employee
+    cur.execute("SELECT velocity, quality_score, projects_delivered, skill_alignment_score FROM employee_metrics WHERE employee_id=?", (row['id'],))
+    metrics_row = cur.fetchone()
+    metrics = {}
+    if metrics_row:
+        metrics = {
+            'Velocity': metrics_row[0],
+            'Quality Score': metrics_row[1], 
+            'Projects Delivered': metrics_row[2],
+            'Skill Alignment Score': metrics_row[3]
+        }
+    conn.close()
+    
     return {
         'id': row['id'],
         'name': row['name'],
@@ -102,8 +144,8 @@ def serialize_employee(row: sqlite3.Row) -> Dict[str, Any]:
         'experience_years': row['experience_years'],
         'education': row['education'],
         'location': row['location'],
-        'skills': json.loads(row['skills']) if row['skills'] else [],
-        'metrics': json.loads(row['metrics']) if row['metrics'] else {},
+        'skills': skills,
+        'metrics': metrics,
         'summary': row['summary']
     }
 
@@ -145,19 +187,58 @@ def insert_project_manager(data: Dict[str, Any]) -> Dict[str, Any]:
     required_skills = data.get('required_skills', [])
     if isinstance(required_skills, str):
         required_skills = [s.strip() for s in required_skills.split(',') if s.strip()]
-    cur.execute("INSERT INTO project_managers (name, role, department, email, experience_years, focus_area, active_project, project_summary, required_skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (data.get('name'), data.get('role'), data.get('department'), data.get('email'), data.get('experience_years'), data.get('focus_area'), data.get('active_project'), data.get('project_summary'), json.dumps(required_skills)))
-    conn.commit()
+    
+    # Insert project manager
+    cur.execute("INSERT INTO project_managers (name, role, department, email, experience_years, focus_area, active_project, project_summary, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))",
+                (data.get('name'), data.get('role'), data.get('department'), data.get('email'), data.get('experience_years'), data.get('focus_area'), data.get('active_project'), data.get('project_summary')))
+    
     mid = cur.lastrowid
+    
+    # Insert required skills
+    for skill in required_skills:
+        cur.execute("INSERT INTO manager_required_skills (manager_id, skill) VALUES (?, ?)", (mid, skill))
+    
+    conn.commit()
     conn.close()
     return fetch_project_manager(mid)
 
 def insert_employee(data: Dict[str, Any]) -> Dict[str, Any]:
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("INSERT INTO employees (name, title, experience_years, education, location, skills, metrics, summary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                (data.get('name'), data.get('title'), data.get('experience_years'), data.get('education'), data.get('location'), json.dumps(data.get('skills', [])), json.dumps(data.get('metrics', {})), data.get('summary')))
-    conn.commit()
+    
+    # Insert employee
+    cur.execute("INSERT INTO employees (name, title, experience_years, education, location, summary, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))",
+                (data.get('name'), data.get('title'), data.get('experience_years'), data.get('education'), data.get('location'), data.get('summary')))
+    
     eid = cur.lastrowid
+    
+    # Insert skills
+    skills = data.get('skills', [])
+    if isinstance(skills, str):
+        skills = [s.strip() for s in skills.split(',') if s.strip()]
+    for skill in skills:
+        cur.execute("INSERT INTO employee_skills (employee_id, skill) VALUES (?, ?)", (eid, skill))
+    
+    # Insert metrics
+    metrics = data.get('metrics', {})
+    if metrics:
+        velocity = metrics.get('Velocity', 0)
+        quality_score = metrics.get('Quality Score', 0)
+        projects_delivered = metrics.get('Projects Delivered', 0)
+        skill_alignment_score = metrics.get('Skill Alignment Score', 0)
+        
+        # Try to parse string values to integers
+        try:
+            velocity = int(velocity) if velocity else 0
+            quality_score = int(quality_score) if quality_score else 0
+            projects_delivered = int(projects_delivered) if projects_delivered else 0
+            skill_alignment_score = int(skill_alignment_score) if skill_alignment_score else 0
+        except (ValueError, TypeError):
+            velocity = quality_score = projects_delivered = skill_alignment_score = 0
+        
+        cur.execute("INSERT INTO employee_metrics (employee_id, velocity, quality_score, projects_delivered, skill_alignment_score) VALUES (?, ?, ?, ?, ?)",
+                    (eid, velocity, quality_score, projects_delivered, skill_alignment_score))
+    
+    conn.commit()
     conn.close()
     return fetch_employee(eid)
