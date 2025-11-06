@@ -1,2 +1,29 @@
 Identified Security Vulnerabilities
-- 
+- Cross Site Scripting
+    - Risk: At the client side innerHTML usage, which means if any fields
+      are user controlled, the chances of an attacker injecting scripts
+      are high.
+    - Possible Solution: Validation and sanitization of the user inputs
+      before storing them.
+
+- Local File Path Usage
+    - Risk: Attacker could influence the file paths.
+    - Possible Solution: Limiting file access to secure directories and not
+      accepting raw filesystem path from the users.
+
+- Unsafe Remote Fetches
+    - Risk: Allowing access to internal resources or even causing the service
+      to act a proxy.
+    - Possible Solution: Before fetching, validating the URLs could help. Plus,
+      using remote resources with strict limits/timeouts would also be benefical.
+
+- Potential for Overwrite
+    - Risk: Attacker can control the directory leading to overwriting files or 
+      logs, especially those with special permissions.
+    - Possible Solution: Avoiding defaulting to the project root and removing legacy
+      behavior that enables the overwriting to happen.
+
+- Exposure in Logs
+    - Risk: Sensitive token information or secrets could be written in the logs.
+    - Possible Solution: Avoiding logging full variable names and implementing
+      secret keys or patterns (ex: API keys).
